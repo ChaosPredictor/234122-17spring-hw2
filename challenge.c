@@ -8,7 +8,7 @@
 #include "challenge.h"
 
 Result init_challenge(Challenge *challenge, int id, char *name, Level level) {
-	printf("TODO init of challenge\n");
+	printf("\nTODO init of challenge\n");
 	printf("in init: %s   %d   %i\n", name, id, level); 	
 	return OK;
 }
