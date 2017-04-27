@@ -41,6 +41,7 @@ Result create_system(char *init_file, ChallengeRoomSystem **sys) {
 
   int tempNumber = 0;
 	numberRead(&tempNumber, file); //number of challenges
+	//TODO - check return
 	printf("\n%d\n", tempNumber);
 	(*sys)->challenges = malloc(sizeof(Challenge) * tempNumber);
 	Challenge *tempChallenge = malloc(sizeof(*tempChallenge)); 
@@ -49,10 +50,9 @@ Result create_system(char *init_file, ChallengeRoomSystem **sys) {
 	for(int i = 0; i < tempNumber; i++) {
 		printf("%d\n", i);
 		challengeRead(tempChallenge, file);
-		printf("%s   %d   %i\n", tempChallenge->name, tempChallenge->id, tempChallenge->level);		
-		//Result init_challenge((*sys)->challenges[0], int id, char *name, Level level)
+		init_challenge((*sys)->challenges, tempChallenge->id, tempChallenge->name, tempChallenge->level);	
 	}
-	//TODO - check return
+
 
 	
 	
