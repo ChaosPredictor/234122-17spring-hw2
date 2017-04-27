@@ -12,11 +12,17 @@
 
 int main(int argc, char **argv)
 {
+	ChallengeRoomSystem *sys=NULL;
+	Result r=OK;
 
-   ChallengeRoomSystem *sys=NULL;
-   Result r=OK;
+	r=create_system("test_2.txt", &sys);
 
-   r=create_system("test_1.txt", &sys);
+	ASSERT("1.0a\n" , r==NULL_PARAMETER)	
+
+	r=create_system("test_1.txt", &sys);
+
+	printf("%s%lu\n", sys->name, strlen(sys->name));	
+	ASSERT("1.0b\n" , r==OK)	
 
 /*   r=visitor_arrive(sys, "room_2", "visitor_1", 201, Medium, 5);
 
@@ -84,7 +90,7 @@ int main(int argc, char **argv)
 
    free(challenge_best_time);
 */
-   ASSERT("1.2" , r==OK)
+
 
    return 0;
 }
