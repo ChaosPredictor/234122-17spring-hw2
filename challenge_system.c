@@ -115,7 +115,6 @@ Result create_system(char *init_file, ChallengeRoomSystem **sys) {
 			fclose(file);				
 			return result;			
 		}
-		int tempNumber2 = 0;
 		(*sys)->challengeRooms->challenges = malloc(sizeof(ChallengeActivity) * tempChallengeRoom->num_of_challenges);
 		if(	(*sys)->challengeRooms->challenges == NULL ) {
 			free(tempChallengeRoom);
@@ -126,11 +125,13 @@ Result create_system(char *init_file, ChallengeRoomSystem **sys) {
 			fclose(file);				
 			return result;			
 		} 
+		int tempNumber2 = 0;
 		for(int j=0; j < tempChallengeRoom->num_of_challenges; j++) {
 			//printf("dsfsdf\n");
 			numberRead(&tempNumber2, file);
-			//init_challenge_activity(			
-		//	printf("dsfsdf %d\n", tempNumber2);
+			//init_challenge_activity(
+			//init_challenge_activity(ChallengeActivity *activity, Challenge *challenge);	
+			printf("  %d\n", tempNumber2);
 		}
 	}
 	free(tempChallengeRoom);
