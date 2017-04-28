@@ -49,6 +49,26 @@ int main(int argc, char **argv)
 	r = reset_challenge(challenge);
 	ASSERT("2.1b - reset_challenge" , r==OK)
 
+	r = init_room(NULL, NULL, 1);
+  ASSERT("2.2a - init_room" , r==NULL_PARAMETER)	
+	r = init_room(NULL, "name", 1);
+  ASSERT("2.2b - init_room" , r==NULL_PARAMETER)	
+
+	ChallengeRoom *room = malloc(sizeof(ChallengeRoom));
+	if (challenge != NULL) {
+		r = init_room(room, NULL, 1);
+		ASSERT("2.2c - init_room" , r==NULL_PARAMETER)
+		r = init_room(room, "name", 1);
+		ASSERT("2.2d - init_room" , r==OK)
+	}
+
+	r = reset_room(NULL);
+	ASSERT("2.3a - reset_room" , r==NULL_PARAMETER)
+	r = reset_room(room);
+	ASSERT("2.3b - reset_room" , r==OK)
+
+
+
 /*   r=visitor_arrive(sys, "room_2", "visitor_1", 201, Medium, 5);
 
    r=visitor_arrive(sys, "room_1", "visitor_2", 202, Easy, 8);

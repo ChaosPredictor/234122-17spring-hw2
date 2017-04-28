@@ -22,7 +22,6 @@ Result init_challenge(Challenge *challenge, int id, char *name, Level level) {
 	challenge->num_visits = 0;
 	return OK;
 }
-/* IMPLEMENT HERE ALL WHAT IS NEEDED */
 
 
 Result reset_challenge(Challenge *challenge) {
