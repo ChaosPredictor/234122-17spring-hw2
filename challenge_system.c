@@ -100,8 +100,9 @@ Result create_system(char *init_file, ChallengeRoomSystem **sys) {
 				result = init_room(&((*sys)->challengeRooms[i]), tempName, numberOfChallenges);
 				for(int j = 0; j < numberOfChallenges; j++) {
 					fscanf(file, " %d", &tempNumber);
-					Challenge* chall = findChallengeById(*sys, tempNumber);
-					printf("  challenge name: %s\n", chall->name);
+					Challenge* challenge = findChallengeById(*sys, tempNumber);
+					init_challenge_activity(&((*sys)->challengeRooms[i].challenges[j]), challenge);
+					//printf("  challenge name: %s\n", chall->name);
 				}	
 
 //			if ( result == OK ) 

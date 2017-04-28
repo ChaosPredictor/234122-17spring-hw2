@@ -39,3 +39,12 @@ Result reset_room(ChallengeRoom *room) {
 	free(room->name);
 	return OK;
 }
+
+
+Result init_challenge_activity(ChallengeActivity *activity, Challenge *challenge) {
+	if ( activity == NULL || challenge == NULL) {
+		return NULL_PARAMETER;
+	}
+	activity->challenge = challenge;
+	return OK;
+}

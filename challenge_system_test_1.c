@@ -23,12 +23,23 @@ int main(int argc, char **argv)
 	
 	//print system name
 	printf("system name:%s leng:%lu\n", sys->name, strlen(sys->name));	
-	// print system first system challenge
-	//printf("challenge name:%s leng:%lu\n", sys->challenges[0].name, strlen(sys->challenges[0].name));
 
+	// print system challenges
 	for(int i = 0; i < sys->numberOfChallenges; i++) {
 		printf("challenge id:%d name:%s level:%u\n", sys->challenges[i].id, sys->challenges[i].name, sys->challenges[i].level);	
 	}
+
+	// print system challenge rooms
+	for(int i = 0; i < sys->numberOfChallengeRooms; i++) {
+		ChallengeRoom* room = &(sys->challengeRooms[i]);
+		int num_of_challenges = room->num_of_challenges;
+		printf("room name:%s nmuber of challenges in the room:%d\n", room->name, num_of_challenges);
+		for(int j = 0; j < room->num_of_challenges; j++) {
+			Challenge* challenge = room->challenges[j].challenge;
+			printf("	challenge name:%s\n", challenge->name);
+		}		
+	}
+
 
 	ASSERT("1.0b\n" , r==OK)
 	
