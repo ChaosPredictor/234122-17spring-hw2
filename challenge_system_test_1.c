@@ -55,6 +55,7 @@ int main(int argc, char **argv)
 		r = init_challenge(challenge, 2, "name", 1);
 		ASSERT("2.0d - init_challenge" , r==OK)
 	}
+
 	r = reset_challenge(NULL);
 	ASSERT("2.1a - reset_challenge" , r==NULL_PARAMETER)
 	r = reset_challenge(challenge);
@@ -72,15 +73,29 @@ int main(int argc, char **argv)
 		r = init_room(room, "name", 1);
 		ASSERT("2.2d - init_room" , r==OK)
 	}
+		
 
 	r = reset_room(NULL);
 	ASSERT("2.3a - reset_room" , r==NULL_PARAMETER)
 	r = reset_room(room);
 	ASSERT("2.3b - reset_room" , r==OK)
 
+	//TODO init_challenge_activity tests
+/*
+	r = init_challenge_activity(NULL, 2, NULL, 1);
+  ASSERT("2.4a - init_challenge" , r==NULL_PARAMETER)	
+	r = init_challenge_activity(NULL, 2, "name", 1);
+  ASSERT("2.4b - init_challenge" , r==NULL_PARAMETER)	
 
-
-/*   r=visitor_arrive(sys, "room_2", "visitor_1", 201, Medium, 5);
+	if (challenge != NULL) {
+		r = init_challenge_activity(challenge, 2, NULL, 1);
+		ASSERT("2.4c - init_challenge" , r==NULL_PARAMETER)
+		r = init_challenge_activity(challenge, 2, "name", 1);
+		ASSERT("2.4d - init_challenge" , r==OK)
+	}
+*/
+/*
+   r=visitor_arrive(sys, "room_2", "visitor_1", 201, Medium, 5);
 
    r=visitor_arrive(sys, "room_1", "visitor_2", 202, Easy, 8);
 

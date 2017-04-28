@@ -48,3 +48,13 @@ Result init_challenge_activity(ChallengeActivity *activity, Challenge *challenge
 	activity->challenge = challenge;
 	return OK;
 }
+
+Result reset_challenge_activity(ChallengeActivity *activity) {
+	if ( activity == NULL) {
+		return NULL_PARAMETER;
+	}
+	free(activity->challenge);
+	free(activity->visitor);
+	return OK;
+}
+
