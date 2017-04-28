@@ -74,10 +74,11 @@ Result create_system(char *init_file, ChallengeRoomSystem **sys) {
 	// READ Challenges Rooms
 	numberRead(&tempNumber, file); //number of Challenge Rooms
 	//TODO - check return
-	printf("\n%d\n", tempNumber);
-	
+	//printf("\n%d\n", tempNumber);
+	(*sys)->numberOfChallengeRooms = tempNumber;	
 	(*sys)->challengeRooms = malloc(sizeof(ChallengeRoom) * tempNumber);
 	if ((*sys)->challenges == NULL) {
+		
 		free((*sys)->challenges);
 		free((*sys)->name);
 		free(*sys);
