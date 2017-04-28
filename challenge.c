@@ -8,6 +8,9 @@
 #include "challenge.h"
 
 Result init_challenge(Challenge *challenge, int id, char *name, Level level) {
+	if ( name == NULL || challenge == NULL) {
+		return NULL_PARAMETER;
+	} 
 	challenge->name = malloc(sizeof(char) * (strlen(name) + 1));
 	if ( challenge->name == NULL) {
 		return MEMORY_PROBLEM;
@@ -16,7 +19,7 @@ Result init_challenge(Challenge *challenge, int id, char *name, Level level) {
 	challenge->id = id;
 	challenge->level = level;
 	challenge->best_time = 0;
-	challenge->num_visits = 0
+	challenge->num_visits = 0;
 	return OK;
 }
 /* IMPLEMENT HERE ALL WHAT IS NEEDED */

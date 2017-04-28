@@ -32,6 +32,22 @@ int main(int argc, char **argv)
 
 	ASSERT("1.0b\n" , r==OK)
 	
+	r = init_challenge(NULL, 2, NULL, 1);
+  ASSERT("2.0a - init_challenge" , r==NULL_PARAMETER)	
+	r = init_challenge(NULL, 2, "name", 1);
+  ASSERT("2.0b - init_challenge" , r==NULL_PARAMETER)	
+
+	Challenge *challenge = malloc(sizeof(Challenge));
+	if (challenge != NULL) {
+		r = init_challenge(challenge, 2, NULL, 1);
+		ASSERT("2.0c - init_challenge" , r==NULL_PARAMETER)
+		r = init_challenge(challenge, 2, "name", 1);
+		ASSERT("2.0d - init_challenge" , r==OK)
+	}
+	r = reset_challenge(NULL);
+	ASSERT("2.1a - reset_challenge" , r==NULL_PARAMETER)
+	r = reset_challenge(challenge);
+	ASSERT("2.1b - reset_challenge" , r==OK)
 
 /*   r=visitor_arrive(sys, "room_2", "visitor_1", 201, Medium, 5);
 
