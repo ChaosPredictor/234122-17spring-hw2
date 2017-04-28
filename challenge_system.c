@@ -15,7 +15,7 @@ Result nameRead(Name name, FILE* inputFile);
 Result numberRead(int* number, FILE* inputFile);
 Result challengeRead(Challenge* challenge, FILE* inputFile);
 Result challengeRoomRead(ChallengeRoom* challengeRoom, FILE* inputFile);
-void find_challenge_by_id(ChallengeRoomSystem *sys,int idNumber);
+Challenge* findChallengeById(ChallengeRoomSystem *sys, int id) ;
 
 Result create_system(char *init_file, ChallengeRoomSystem **sys) {
 
@@ -96,11 +96,12 @@ Result create_system(char *init_file, ChallengeRoomSystem **sys) {
 	int numberOfChallenges;
 	for(int i = 0; i < (*sys)->numberOfChallengeRooms; i++) {
 		if ( nameRead(tempName, file) == OK && fscanf(file, " %d", &numberOfChallenges)) {
-				//printf("Room Name: %s & chall: %d\n", tempName, numberOfChallenges);
+				printf("Room Name: %s & chall: %d\n", tempName, numberOfChallenges);
 				result = init_room(&((*sys)->challengeRooms[i]), tempName, numberOfChallenges);
 				for(int j = 0; j < numberOfChallenges; j++) {
 					fscanf(file, " %d", &tempNumber);
-					printf("  tempNumber: %d\n", tempNumber);
+					Challenge* chall = findChallengeById(*sys, tempNumber);
+					printf("  challenge name: %s\n", chall->name);
 				}	
 
 //			if ( result == OK ) 
@@ -253,13 +254,16 @@ Result challengeRoomRead(ChallengeRoom* challengeRoom, FILE* inputFile) {
 	return OK;
 }
 
-void find_challenge_by_id(ChallengeRoomSystem *sys,int idNumber) {
+Challenge* findChallengeById(ChallengeRoomSystem *sys, int id) {
 	//printf("temp %d\n", (*sys).numberOfChallenges);
 	int number_of_challenges = (*sys).numberOfChallenges;
 	for(int i = 0; i < number_of_challenges; i++) {
-		//printf("			%d\n"), (*sys).challenges[i].id);
-		//printf("			%d\n", i);
+		if ( (*sys).challenges[i].id == id) {
+			return &((*sys).challenges[i]);
+			//printf("%d %s  ",i , (*sys).challenges[i].name);
+		}
 	}
-	return;
+	printf("\n");
+	return NULL;
 }
 
