@@ -14,8 +14,11 @@ typedef char* Name;
 Result nameRead(Name name, FILE* inputFile);
 Result numberRead(int* number, FILE* inputFile);
 Result challengeRead(Challenge* challenge, FILE* inputFile);
+Result challengeRoomRead(ChallengeRoom* challenge, FILE* inputFile);
 
 Result create_system(char *init_file, ChallengeRoomSystem **sys) {
+
+	Result result=OK;
 
 	FILE *file = fopen(init_file, "r");
 	if (file == NULL) {
@@ -41,7 +44,7 @@ Result create_system(char *init_file, ChallengeRoomSystem **sys) {
 
 	// READ challenges
   int tempNumber = 0;
-	numberRead(&tempNumber, file); //number of challenges
+	numberRead(&tempNumber, file); //number of Challenges
 	//TODO - check return
 	//printf("\n%d\n", tempNumber);
 
@@ -64,16 +67,24 @@ Result create_system(char *init_file, ChallengeRoomSystem **sys) {
 	for(int i = 0; i < tempNumber; i++) {
 		//printf("%d\n", i);
 		challengeRead(tempChallenge, file);
-		init_challenge((*sys)->challenges, tempChallenge->id, tempChallenge->name, tempChallenge->level);	
+		result = init_challenge((*sys)->challenges, tempChallenge->id, tempChallenge->name, tempChallenge->level);	
+		if (!tempChallenge) {
+			free(tempChallenge);
+			free((*sys)->challenges);
+			free((*sys)->name);
+			free(*sys);
+			fclose(file);				
+			return result;
+		}
 	}
 	free(tempChallenge);
 
-
-	numberRead(&tempNumber, file); //number of challenges
+	// READ Challenges Rooms
+	numberRead(&tempNumber, file); //number of Challenge Rooms
 	//TODO - check return
 	printf("\n%d\n", tempNumber);
 	
-	(*sys)->roomChallenges = malloc(sizeof(ChallengeRoom) * tempNumber);
+	(*sys)->challengeRooms = malloc(sizeof(ChallengeRoom) * tempNumber);
 	if ((*sys)->challenges == NULL) {
 		free((*sys)->challenges);
 		free((*sys)->name);
@@ -81,22 +92,48 @@ Result create_system(char *init_file, ChallengeRoomSystem **sys) {
 		fclose(file);				
 		return MEMORY_PROBLEM;
 	}
-	Challenge *tempRoomChallenge = malloc(sizeof(*tempRoomChallenge)); 
-	if (!tempChallenge) {
-		free((*sys)->roomChallenges);
+	ChallengeRoom *tempChallengeRoom = malloc(sizeof(*tempChallengeRoom)); 
+	if (!tempChallengeRoom) {
+		free((*sys)->challengeRooms);
 		free((*sys)->challenges);
 		free((*sys)->name);
 		free(*sys);
 		fclose(file);				
 		return MEMORY_PROBLEM;
 	}
-	tempRoomChallenge->name = tempName;
+	tempChallengeRoom->name = tempName;
 	for(int i = 0; i < tempNumber; i++) {
-		printf("%d\n", i);
-		//challengeRead(tempChallenge, file);
-		//init_challenge((*sys)->challenges, tempChallenge->id, tempChallenge->name, tempChallenge->level);	
+//		printf("%d\n", i);
+		challengeRoomRead(tempChallengeRoom, file);
+		result = init_room((*sys)->challengeRooms, tempChallengeRoom->name, tempChallengeRoom->num_of_challenges);
+		if(	result != OK ) {
+			free(tempChallengeRoom);
+			free((*sys)->challengeRooms);
+			free((*sys)->challenges);
+			free((*sys)->name);
+			free(*sys);
+			fclose(file);				
+			return result;			
+		}
+		int tempNumber2 = 0;
+		(*sys)->challengeRooms->challenges = malloc(sizeof(ChallengeActivity) * tempChallengeRoom->num_of_challenges);
+		if(	(*sys)->challengeRooms->challenges == NULL ) {
+			free(tempChallengeRoom);
+			free((*sys)->challengeRooms);
+			free((*sys)->challenges);
+			free((*sys)->name);
+			free(*sys);
+			fclose(file);				
+			return result;			
+		} 
+		for(int j=0; j < tempChallengeRoom->num_of_challenges; j++) {
+			//printf("dsfsdf\n");
+			numberRead(&tempNumber2, file);
+			//init_challenge_activity(			
+		//	printf("dsfsdf %d\n", tempNumber2);
+		}
 	}
-	free(tempChallenge);
+	free(tempChallengeRoom);
 
 
 	
@@ -152,7 +189,7 @@ Result numberRead(int* number, FILE* inputFile) {
 		return NULL_PARAMETER;
 	}
 
-	if (!fscanf(inputFile, "%d\n", number)) {
+	if (!fscanf(inputFile, "%d", number)) {
 		return ILLEGAL_PARAMETER;
 	}
 	
@@ -171,7 +208,20 @@ Result challengeRead(Challenge* challenge, FILE* inputFile) {
 	}
 	//printf("%s   %d   %i\n", challenge->name, challenge->id, challenge->level);
 	
-	
+	return OK;
+}
+
+Result challengeRoomRead(ChallengeRoom* challengeRoom, FILE* inputFile) {
+	if (challengeRoom == NULL) {
+		return NULL_PARAMETER;
+	}
+
+	//char* mystring;
+  //mystring = (char*)malloc(50); // set this to any size
+	if (!fscanf(inputFile, "%s %d\n", challengeRoom->name, &(challengeRoom->num_of_challenges) )) {
+		return ILLEGAL_PARAMETER;
+	}
+ 	
 	return OK;
 }
 
