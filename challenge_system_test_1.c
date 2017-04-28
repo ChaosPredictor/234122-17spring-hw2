@@ -20,9 +20,18 @@ int main(int argc, char **argv)
 	ASSERT("1.0a\n" , r==NULL_PARAMETER)	
 
 	r=create_system("test_1.txt", &sys);
+	
+	//print system name
+	printf("system name:%s leng:%lu\n", sys->name, strlen(sys->name));	
+	// print system first system challenge
+	//printf("challenge name:%s leng:%lu\n", sys->challenges[0].name, strlen(sys->challenges[0].name));
 
-	printf("%s%lu\n", sys->name, strlen(sys->name));	
-	ASSERT("1.0b\n" , r==OK)	
+	for(int i = 0; i < sys->numberOfChallenges; i++) {
+		printf("challenge id:%d name:%s level:%u\n", sys->challenges[i].id, sys->challenges[i].name, sys->challenges[i].level);	
+	}
+
+	ASSERT("1.0b\n" , r==OK)
+	
 
 /*   r=visitor_arrive(sys, "room_2", "visitor_1", 201, Medium, 5);
 

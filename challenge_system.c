@@ -14,7 +14,8 @@ typedef char* Name;
 Result nameRead(Name name, FILE* inputFile);
 Result numberRead(int* number, FILE* inputFile);
 Result challengeRead(Challenge* challenge, FILE* inputFile);
-Result challengeRoomRead(ChallengeRoom* challenge, FILE* inputFile);
+Result challengeRoomRead(ChallengeRoom* challengeRoom, FILE* inputFile);
+void find_challenge_by_id(ChallengeRoomSystem *sys,int idNumber);
 
 Result create_system(char *init_file, ChallengeRoomSystem **sys) {
 
@@ -40,14 +41,14 @@ Result create_system(char *init_file, ChallengeRoomSystem **sys) {
 		fclose(file);
 		return MEMORY_PROBLEM;
 	}
-	snprintf((*sys)->name, strlen(tempName)+1, "%s", tempName);
+	//snprintf((*sys)->name, strlen(tempName)+1, "%s", tempName);
+	strcpy((*sys)->name, tempName);
 
 	// READ challenges
   int tempNumber = 0;
 	numberRead(&tempNumber, file); //number of Challenges
 	//TODO - check return
-	//printf("\n%d\n", tempNumber);
-
+	(*sys)->numberOfChallenges = tempNumber;
 	(*sys)->challenges = malloc(sizeof(Challenge) * tempNumber);
 	if ((*sys)->challenges == NULL) {
 		free((*sys)->name);		
@@ -55,29 +56,20 @@ Result create_system(char *init_file, ChallengeRoomSystem **sys) {
 		fclose(file);				
 		return MEMORY_PROBLEM;
 	}
-	Challenge *tempChallenge = malloc(sizeof(*tempChallenge)); 
-	if (!tempChallenge) {
+	int id, level;
+	for(int i = 0; i < tempNumber; i++) {
+		if ( nameRead(tempName, file) == OK && fscanf(file, " %d %d\n", &id, &level)) {
+			result = init_challenge(&((*sys)->challenges[i]), id, tempName, level);
+			if ( result == OK ) 
+				continue;
+		} 
 		free((*sys)->challenges);
 		free((*sys)->name);
 		free(*sys);
-		fclose(file);				
-		return MEMORY_PROBLEM;
+		fclose(file);
+		return MEMORY_PROBLEM;	
 	}
-	tempChallenge->name = tempName;
-	for(int i = 0; i < tempNumber; i++) {
-		//printf("%d\n", i);
-		challengeRead(tempChallenge, file);
-		result = init_challenge((*sys)->challenges, tempChallenge->id, tempChallenge->name, tempChallenge->level);	
-		if (!tempChallenge) {
-			free(tempChallenge);
-			free((*sys)->challenges);
-			free((*sys)->name);
-			free(*sys);
-			fclose(file);				
-			return result;
-		}
-	}
-	free(tempChallenge);
+
 
 	// READ Challenges Rooms
 	numberRead(&tempNumber, file); //number of Challenge Rooms
@@ -92,7 +84,7 @@ Result create_system(char *init_file, ChallengeRoomSystem **sys) {
 		fclose(file);				
 		return MEMORY_PROBLEM;
 	}
-	ChallengeRoom *tempChallengeRoom = malloc(sizeof(*tempChallengeRoom)); 
+	/*ChallengeRoom *tempChallengeRoom = malloc(sizeof(*tempChallengeRoom)); 
 	if (!tempChallengeRoom) {
 		free((*sys)->challengeRooms);
 		free((*sys)->challenges);
@@ -101,13 +93,15 @@ Result create_system(char *init_file, ChallengeRoomSystem **sys) {
 		fclose(file);				
 		return MEMORY_PROBLEM;
 	}
-	tempChallengeRoom->name = tempName;
+	tempChallengeRoom->name = tempName;*/
+
 	for(int i = 0; i < tempNumber; i++) {
 //		printf("%d\n", i);
-		challengeRoomRead(tempChallengeRoom, file);
-		result = init_room((*sys)->challengeRooms, tempChallengeRoom->name, tempChallengeRoom->num_of_challenges);
+		(*sys)->challengeRooms[i].name = tempName;
+		challengeRoomRead(&((*sys)->challengeRooms[i]), file);
+		result = init_room((*sys)->challengeRooms, (*sys)->challengeRooms[i].name, (*sys)->challengeRooms[i].num_of_challenges);
 		if(	result != OK ) {
-			free(tempChallengeRoom);
+			//free(tempChallengeRoom);
 			free((*sys)->challengeRooms);
 			free((*sys)->challenges);
 			free((*sys)->name);
@@ -115,9 +109,9 @@ Result create_system(char *init_file, ChallengeRoomSystem **sys) {
 			fclose(file);				
 			return result;			
 		}
-		(*sys)->challengeRooms->challenges = malloc(sizeof(ChallengeActivity) * tempChallengeRoom->num_of_challenges);
+		(*sys)->challengeRooms->challenges = malloc(sizeof(ChallengeActivity) * (*sys)->challengeRooms[i].num_of_challenges);
 		if(	(*sys)->challengeRooms->challenges == NULL ) {
-			free(tempChallengeRoom);
+			//free(tempChallengeRoom);
 			free((*sys)->challengeRooms);
 			free((*sys)->challenges);
 			free((*sys)->name);
@@ -126,15 +120,16 @@ Result create_system(char *init_file, ChallengeRoomSystem **sys) {
 			return result;			
 		} 
 		int tempNumber2 = 0;
-		for(int j=0; j < tempChallengeRoom->num_of_challenges; j++) {
+		for(int j=0; j < (*sys)->challengeRooms[i].num_of_challenges; j++) {
 			//printf("dsfsdf\n");
 			numberRead(&tempNumber2, file);
 			//init_challenge_activity(
-			//init_challenge_activity(ChallengeActivity *activity, Challenge *challenge);	
-			printf("  %d\n", tempNumber2);
+			find_challenge_by_id(*sys, tempNumber2);
+			//init_challenge_activity((*sys)->challengeRooms->challenges[j], find_challenge_by_id(tempNumber2));	
+			//printf("  %d\n", tempNumber2);
 		}
 	}
-	free(tempChallengeRoom);
+	//free(tempChallengeRoom);
 
 
 	
@@ -177,8 +172,8 @@ Result nameRead(char* name, FILE* inputFile) {
 	if (name == NULL) {
 		return NULL_PARAMETER;
 	}
-
-	if (!fgets(name, NAME_LENG, inputFile)) {
+	if (!fscanf(inputFile,"%s", name)) {
+	//if (!fgets(name, NAME_LENG, inputFile)) {
 		return ILLEGAL_PARAMETER;
 	}
 	
@@ -224,5 +219,15 @@ Result challengeRoomRead(ChallengeRoom* challengeRoom, FILE* inputFile) {
 	}
  	
 	return OK;
+}
+
+void find_challenge_by_id(ChallengeRoomSystem *sys,int idNumber) {
+	//printf("temp %d\n", (*sys).numberOfChallenges);
+	int number_of_challenges = (*sys).numberOfChallenges;
+	for(int i = 0; i < number_of_challenges; i++) {
+		//printf("			%d\n"), (*sys).challenges[i].id);
+		//printf("			%d\n", i);
+	}
+	return;
 }
 
