@@ -110,7 +110,12 @@ int main(int argc, char **argv)
 	r=visitor_arrive(sys, "room_2", "visitor_1", 201, Medium, 5);
 	ASSERT("2.6x - visitor_arrive" , r==OK)
 
-
+	
+	r=init_visitor(NULL, "name", 3);
+	ASSERT("2.7a - visitor_arrive" , r==NULL_PARAMETER)
+	Visitor* visitor = malloc(sizeof(Visitor));
+	r=init_visitor(visitor, NULL, 3);
+	ASSERT("2.7b - visitor_arrive" , r==NULL_PARAMETER)
 
 
 

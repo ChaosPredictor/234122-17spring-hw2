@@ -44,7 +44,27 @@ Result reset_room(ChallengeRoom *room) {
 
 
 Result init_visitor(Visitor *visitor, char *name, int id) {
+	if( visitor == NULL || name == NULL ) {
+		return NULL_PARAMETER;
+	}
+	visitor->visitor_name = malloc(strlen(visitor->visitor_name));
+	if (visitor->visitor_name == NULL) {
+		return MEMORY_PROBLEM;
+	}
+	strcpy(visitor->visitor_name, name);
+
+	visitor->room_name = NULL;
+	visitor->current_challenge = NULL;
+	
 	//TODO - add visitor to list;	
+	return OK;
+}
+
+Result reset_visitor(Visitor *visitor) {
+	if( visitor == NULL ) {
+		return NULL_PARAMETER;
+	}
+	free(visitor->visitor_name);
 	return OK;
 }
 

@@ -131,13 +131,15 @@ Result visitor_arrive(ChallengeRoomSystem *sys, char *room_name, char *visitor_n
 	if( (room_name == NULL) || (visitor_name == NULL) ) {
 		return ILLEGAL_PARAMETER;
 	}
-	ChallengeRoom* room = findRoomByName(sys, room_name);
-	Visitor* visitor = malloc(sizeof(Visitor));
+	//ChallengeRoom* room = findRoomByName(sys, room_name);
+	Visitor* visitor = malloc(sizeof(visitor));
+	//TODO - check malloc
 	Result result = init_visitor(visitor, visitor_name, visitor_id);
 	if( result != OK) {
 		return result;
 	}
-	return visitor_enter_room(room, visitor, level, start_time);
+	return OK;
+	//return visitor_enter_room(room, visitor, level, start_time);
 }
 
 
