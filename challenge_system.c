@@ -65,11 +65,13 @@ Result create_system(char *init_file, ChallengeRoomSystem **sys) {
 		return MEMORY_PROBLEM;
 	}
 
-	int id, level;
+	int id;
+	unsigned int level;
 	for(int i = 0; i < (*sys)->numberOfChallenges; i++) {
 		if ( nameRead(tempName, file) == OK && \
-				fscanf(file, " %d %d\n", &id, &level)) {
-			result = init_challenge(&((*sys)->challenges[i]), id, tempName, level);
+				fscanf(file, " %d %u\n", &id, &level)) {
+				//MINUS 1 caused by offset 1-Easy 2-Medium 3-Hard should by 0-2 
+			result = init_challenge(&((*sys)->challenges[i]), id, tempName, level-1);
 			if ( result == OK ) 
 				continue;
 				//TODO - what to do if only part succeed
@@ -105,6 +107,7 @@ Result create_system(char *init_file, ChallengeRoomSystem **sys) {
 		if ( nameRead(tempName, file) == OK && fscanf(file, " %d", &numberOfChallenges)) {
 				printf("Room Name: %s & chall: %d\n", tempName, numberOfChallenges);
 				result = init_room(&((*sys)->challengeRooms[i]), tempName, numberOfChallenges);
+				//TODO - put challenges laxecogfi...
 				for(int j = 0; j < numberOfChallenges; j++) {
 					fscanf(file, " %d", &tempNumber);
 					Challenge* challenge = findChallengeById(*sys, tempNumber);
@@ -132,18 +135,33 @@ Result visitor_arrive(ChallengeRoomSystem *sys, char *room_name, char *visitor_n
 	if( (room_name == NULL) || (visitor_name == NULL) ) {
 		return ILLEGAL_PARAMETER;
 	}
-  char* room = malloc(NAME_LENG);	
-	Result result = system_room_of_visitor(sys, visitor_name, &room);
-	if( result == ALREADY_IN_ROOM) {
-		return ALREADY_IN_ROOM;
+
+	ChallengeRoom* room = findRoomByName(sys, room_name);
+	int places = 0;	
+	Result result = num_of_free_places_for_level(room, level, &places);
+	if( result != OK ) {
+		return OK;
 	}
-	//ChallengeRoom* room = findRoomByName(sys, room_name);
+	if( places == 0 ) {
+		return NO_AVAILABLE_CHALLENGES;
+	}
+	//TODO - check if your in some room;
 	Visitor* visitor = malloc(sizeof(visitor));
 	//TODO - check malloc
 	result = init_visitor(visitor, visitor_name, visitor_id);
 	if( result != OK) {
 		return result;
 	}
+
+
+	
+/*
+  char* room = malloc(NAME_LENG);	
+	Result result = system_room_of_visitor(sys, visitor_name, &room);
+	if( result == ALREADY_IN_ROOM) {
+		return ALREADY_IN_ROOM;
+	}
+*/
 	
 	return OK;
 	//return visitor_enter_room(room, visitor, level, start_time);
