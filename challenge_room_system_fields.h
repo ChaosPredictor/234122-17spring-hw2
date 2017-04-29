@@ -4,3 +4,4 @@ Challenge* challenges;
 int numberOfChallenges;
 ChallengeRoom* challengeRooms;
 int numberOfChallengeRooms;
+int lastTime;

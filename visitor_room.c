@@ -7,6 +7,8 @@
 
 #include "visitor_room.h"
 
+Result isVisitorNowInRoom(Visitor* visitor_id);
+Challenge* findChallengeInRoom(ChallengeRoom* room, Level level);
 
 Result init_room(ChallengeRoom *room, char *name, int num_challenges) {
 	//printf("in init: %s   %d\n", name, num_challenges);
@@ -41,6 +43,11 @@ Result reset_room(ChallengeRoom *room) {
 }
 
 
+Result init_visitor(Visitor *visitor, char *name, int id) {
+	//TODO - add visitor to list;	
+	return OK;
+}
+
 Result init_challenge_activity(ChallengeActivity *activity, Challenge *challenge) {
 	if ( activity == NULL || challenge == NULL) {
 		return NULL_PARAMETER;
@@ -57,4 +64,28 @@ Result reset_challenge_activity(ChallengeActivity *activity) {
 	free(activity->visitor);
 	return OK;
 }
+
+Result visitor_enter_room(ChallengeRoom *room, Visitor *visitor, Level level, int start_time) {
+	if ( isVisitorNowInRoom(visitor) != OK ) {
+		return ALREADY_IN_ROOM;
+	}
+	printf("\nvisitor arrived \n\n");
+	findChallengeInRoom(room, level);
+
+	return OK;
+}
+
+
+Result isVisitorNowInRoom(Visitor* visitor) {
+	//TODO - check if visitor exist;	
+	return OK;
+}
+
+Challenge* findChallengeInRoom(ChallengeRoom *room, Level level) {
+	//TODO - find challenge in room;
+	return NULL;
+}
+
+
+
 

@@ -94,9 +94,28 @@ int main(int argc, char **argv)
 		ASSERT("2.4d - init_challenge" , r==OK)
 	}
 */
-/*
-   r=visitor_arrive(sys, "room_2", "visitor_1", 201, Medium, 5);
 
+	r=visitor_arrive(sys, "room_2", "visitor_1", 201, Medium, -5);
+	ASSERT("2.6a - visitor_arrive" , r==ILLEGAL_TIME)
+
+	r=visitor_arrive(NULL, "room_2", "visitor_1", 201, Medium, 0);
+	ASSERT("2.6b - visitor_arrive" , r==NULL_PARAMETER)
+
+	r=visitor_arrive(sys, NULL, "visitor_1", 201, Medium, 5);
+	ASSERT("2.6c - visitor_arrive" , r==ILLEGAL_PARAMETER)
+
+	r=visitor_arrive(sys, "room_2", NULL, 201, Medium, 5);
+	ASSERT("2.6d - visitor_arrive" , r==ILLEGAL_PARAMETER)
+
+	r=visitor_arrive(sys, "room_2", "visitor_1", 201, Medium, 5);
+	ASSERT("2.6x - visitor_arrive" , r==OK)
+
+
+
+
+
+
+/*
    r=visitor_arrive(sys, "room_1", "visitor_2", 202, Easy, 8);
 
    r=visitor_quit(sys, 203, 10);

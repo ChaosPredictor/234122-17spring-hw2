@@ -15,7 +15,13 @@ Result nameRead(Name name, FILE* inputFile);
 Result numberRead(int* number, FILE* inputFile);
 Result challengeRead(Challenge* challenge, FILE* inputFile);
 Result challengeRoomRead(ChallengeRoom* challengeRoom, FILE* inputFile);
-Challenge* findChallengeById(ChallengeRoomSystem *sys, int id) ;
+Challenge* findChallengeById(ChallengeRoomSystem *sys, int id);
+ChallengeRoom* findRoomByName(ChallengeRoomSystem *sys, char* name);
+//int isVisitorNowInRoom(ChallengeRoomSystem *sys, int visitor_id);
+//Challenge* findChallengeInRoom(ChallengeRoomSystem *sys, char *room_name, Level level);
+
+
+
 
 Result create_system(char *init_file, ChallengeRoomSystem **sys) {
 
@@ -105,101 +111,40 @@ Result create_system(char *init_file, ChallengeRoomSystem **sys) {
 					//printf("  challenge name: %s\n", chall->name);
 				}	
 
-//			if ( result == OK ) 
-//				continue;
 		} 
-//		free((*sys)->challenges);
-//		free((*sys)->name);
-//		free(*sys);
-//		fclose(file);
-//		return MEMORY_PROBLEM;	
 	}
-
 	
-
-
-/*ChallengeRoom *tempChallengeRoom = malloc(sizeof(*tempChallengeRoom)); 
-	if (!tempChallengeRoom) {
-		free((*sys)->challengeRooms);
-		free((*sys)->challenges);
-		free((*sys)->name);
-		free(*sys);
-		fclose(file);				
-		return MEMORY_PROBLEM;
-	}
-	tempChallengeRoom->name = tempName;*/
-/*
-	for(int i = 0; i < tempNumber; i++) {
-//		printf("%d\n", i);
-		(*sys)->challengeRooms[i].name = tempName;
-		challengeRoomRead(&((*sys)->challengeRooms[i]), file);
-		result = init_room((*sys)->challengeRooms, (*sys)->challengeRooms[i].name, (*sys)->challengeRooms[i].num_of_challenges);
-		if(	result != OK ) {
-			//free(tempChallengeRoom);
-			free((*sys)->challengeRooms);
-			free((*sys)->challenges);
-			free((*sys)->name);
-			free(*sys);
-			fclose(file);				
-			return result;			
-		}
-		(*sys)->challengeRooms->challenges = malloc(sizeof(ChallengeActivity) * (*sys)->challengeRooms[i].num_of_challenges);
-		if(	(*sys)->challengeRooms->challenges == NULL ) {
-			//free(tempChallengeRoom);
-			free((*sys)->challengeRooms);
-			free((*sys)->challenges);
-			free((*sys)->name);
-			free(*sys);
-			fclose(file);				
-			return result;			
-		} 
-		int tempNumber2 = 0;
-		for(int j=0; j < (*sys)->challengeRooms[i].num_of_challenges; j++) {
-			//printf("dsfsdf\n");
-			numberRead(&tempNumber2, file);
-			//init_challenge_activity(
-			find_challenge_by_id(*sys, tempNumber2);
-			//init_challenge_activity((*sys)->challengeRooms->challenges[j], find_challenge_by_id(tempNumber2));	
-			//printf("  %d\n", tempNumber2);
-		}
-	}*/
-	//free(tempChallengeRoom);
-
-
+	(*sys)->lastTime = 0;	
 	
-	
-	//challenge = temp;		
-	//sys->name = temp;
-	//(*sys)->name = &challenge;
-
-	//printf("%s\n", (*sys)->name);
-//	fgets(line, 100, file);
-//	printf("leng of %s:%d\n", line, (int)sizeof(line));
-
-	//*sys->name = line;
-
-//	while (fgets(line, 100, file)) {
-//		printf("%s", line);
-//	}
-
-
-	//printf("Retrieved line of length %zu :\n", read);
-	//printf("%s", line);
-/*
-	while ((read = getline(&line, &len, fp)) != -1) {
-		printf("%s", line);
-	}
-
-
-
-
-*/
-    //fclose(file);
-    //if (line)
-    //   free(line);
-
 	return OK;
 }
+
+
+
+Result visitor_arrive(ChallengeRoomSystem *sys, char *room_name, char *visitor_name, int visitor_id, Level level, int start_time) {
+	if( sys == NULL) {
+		return NULL_PARAMETER;
+	}
+	if( sys->lastTime > start_time) {
+		return ILLEGAL_TIME;
+	}
+	if( (room_name == NULL) || (visitor_name == NULL) ) {
+		return ILLEGAL_PARAMETER;
+	}
+	ChallengeRoom* room = findRoomByName(sys, room_name);
+	Visitor* visitor = malloc(sizeof(Visitor));
+	Result result = init_visitor(visitor, visitor_name, visitor_id);
+	if( result != OK) {
+		return result;
+	}
+	return visitor_enter_room(room, visitor, level, start_time);
+}
+
+
+
+
+
+
 
 
 Result nameRead(char* name, FILE* inputFile) {
@@ -267,4 +212,35 @@ Challenge* findChallengeById(ChallengeRoomSystem *sys, int id) {
 	printf("\n");
 	return NULL;
 }
+
+
+ChallengeRoom* findRoomByName(ChallengeRoomSystem *sys, char* name) {
+	//printf("ROOM: %s\n", name);
+	int number_of_challengeRooms = (*sys).numberOfChallengeRooms;
+	for(int i = 0; i < number_of_challengeRooms; i++) {
+		//printf("%d %s  \n", i , (*sys).challengeRooms[i].name);
+		if ( strcmp((*sys).challengeRooms[i].name, name) == 0) {
+			//printf("%d %s  \n", i , (*sys).challengeRooms[i].name);
+			return &((*sys).challengeRooms[i]);
+		}
+	}
+	//printf("\n");
+	return NULL;
+}
+
+/*
+int isVisitorNowInRoom(ChallengeRoomSystem *sys, int visitor_id) {
+	//TODO - check if visitor in the list;
+	return 0;
+}
+
+Challenge* findChallengeInRoom(ChallengeRoomSystem *sys, char *room_name, Level level) {
+	ChallengeRoom* room = findRoomByName(sys, room_name);
+	printf("room name: %s number: %d\n", room->name, room->num_of_challenges);
+	
+	//TODO - find if there is challenge in the room inask level; 	
+	return NULL;
+}
+*/
+
 
