@@ -7,6 +7,11 @@
 
 #include "visitor_room.h"
 
+typedef struct visitorNode {
+	Visitor visitor;
+	struct visitorNode* next;
+} Node;
+
 Result isVisitorNowInRoom(Visitor* visitor_id);
 Challenge* findChallengeInRoom(ChallengeRoom* room, Level level);
 
@@ -41,6 +46,22 @@ Result reset_room(ChallengeRoom *room) {
 	free(room->name);
 	return OK;
 }
+
+
+Result num_of_free_places_for_level(ChallengeRoom *room, Level level, int *places) {
+	if ( room == NULL ) {
+		return NULL_PARAMETER;
+	}
+	*places = 0;
+	int num_of_challenges = room->num_of_challenges;
+	for(int i = 0; i < num_of_challenges; i++) {
+		if ( level == 4 || level == room->challenges[i].challenge->level ) {
+			(*places)++;
+		}
+	}
+	return OK;
+}
+
 
 
 Result init_visitor(Visitor *visitor, char *name, int id) {
@@ -85,6 +106,11 @@ Result reset_challenge_activity(ChallengeActivity *activity) {
 	return OK;
 }
 
+Result room_of_visitor(Visitor *visitor, char **room_name) {
+	//TODO find room for visitor;
+	return OK;
+}
+
 Result visitor_enter_room(ChallengeRoom *room, Visitor *visitor, Level level, int start_time) {
 	if ( isVisitorNowInRoom(visitor) != OK ) {
 		return ALREADY_IN_ROOM;
@@ -94,6 +120,7 @@ Result visitor_enter_room(ChallengeRoom *room, Visitor *visitor, Level level, in
 
 	return OK;
 }
+
 
 
 Result isVisitorNowInRoom(Visitor* visitor) {

@@ -9,6 +9,8 @@
    if (!(test_condition)) {printf("\nTEST %s FAILED", test_number); } \
    else printf("\nTEST %s OK", test_number);
 
+#define NAME_LENG 51 //Max leng 50 + 1 of end of string
+
 
 int main(int argc, char **argv)
 {
@@ -112,18 +114,39 @@ int main(int argc, char **argv)
 
 	
 	r=init_visitor(NULL, "name", 3);
-	ASSERT("2.7a - visitor_arrive" , r==NULL_PARAMETER)
+	ASSERT("2.7a - init_visitor" , r==NULL_PARAMETER)
 	Visitor *visitor = malloc(sizeof(*visitor));
 	r=init_visitor(visitor, NULL, 3);
-	ASSERT("2.7b - visitor_arrive" , r==NULL_PARAMETER)
+	ASSERT("2.7b - init_visitor" , r==NULL_PARAMETER)
 	r=init_visitor(visitor, "name", 3);
-	ASSERT("2.7c - visitor_arrive" , r==OK)
+	ASSERT("2.7c - init_visitor" , r==OK)
 
 	r=reset_visitor(NULL);
-	ASSERT("2.8a - visitor_arrive" , r==NULL_PARAMETER)
+	ASSERT("2.8a - reset_visitor" , r==NULL_PARAMETER)
 	r=reset_visitor(visitor);
-	ASSERT("2.8b - visitor_arrive" , r==OK)
+	ASSERT("2.8b - reset_visitor" , r==OK)
 	free(visitor);
+
+  char* room_name = malloc(NAME_LENG);
+	r=system_room_of_visitor(NULL, "name", &room_name);
+	ASSERT("2.9a - system_room_of_visitor" , r==NULL_PARAMETER)
+	r=system_room_of_visitor(sys, NULL, &room_name);
+	ASSERT("2.9b - system_room_of_visitor" , r==ILLEGAL_PARAMETER)
+	r=system_room_of_visitor(sys, "name", NULL);
+	ASSERT("2.9c - system_room_of_visitor" , r==ILLEGAL_PARAMETER)
+
+	int place;
+	r=num_of_free_places_for_level(NULL, 1, &place);
+	ASSERT("2.10a - num_of_free_places_for_level" , r==NULL_PARAMETER)
+	r=num_of_free_places_for_level(&(sys->challengeRooms[1]), 1, &place);
+	ASSERT("2.10b - num_of_free_places_for_level" , r==OK && place == 2)
+	r=num_of_free_places_for_level(&(sys->challengeRooms[1]), 2, &place);
+	ASSERT("2.10c - num_of_free_places_for_level" , r==OK && place == 0)
+	r=num_of_free_places_for_level(&(sys->challengeRooms[1]), 3, &place);
+	ASSERT("2.10d - num_of_free_places_for_level" , r==OK && place == 1)
+	r=num_of_free_places_for_level(&(sys->challengeRooms[1]), 4, &place);
+	ASSERT("2.10a - num_of_free_places_for_level" , r==OK && place == 3)
+
 
 
 /*

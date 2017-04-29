@@ -17,6 +17,7 @@ Result challengeRead(Challenge* challenge, FILE* inputFile);
 Result challengeRoomRead(ChallengeRoom* challengeRoom, FILE* inputFile);
 Challenge* findChallengeById(ChallengeRoomSystem *sys, int id);
 ChallengeRoom* findRoomByName(ChallengeRoomSystem *sys, char* name);
+Visitor* find_visitor_by_name(char* visitor_name);
 //int isVisitorNowInRoom(ChallengeRoomSystem *sys, int visitor_id);
 //Challenge* findChallengeInRoom(ChallengeRoomSystem *sys, char *room_name, Level level);
 
@@ -115,7 +116,7 @@ Result create_system(char *init_file, ChallengeRoomSystem **sys) {
 	}
 	
 	(*sys)->lastTime = 0;	
-	
+	(*sys)->visitor_head = NULL;
 	return OK;
 }
 
@@ -131,21 +132,38 @@ Result visitor_arrive(ChallengeRoomSystem *sys, char *room_name, char *visitor_n
 	if( (room_name == NULL) || (visitor_name == NULL) ) {
 		return ILLEGAL_PARAMETER;
 	}
+  char* room = malloc(NAME_LENG);	
+	Result result = system_room_of_visitor(sys, visitor_name, &room);
+	if( result == ALREADY_IN_ROOM) {
+		return ALREADY_IN_ROOM;
+	}
 	//ChallengeRoom* room = findRoomByName(sys, room_name);
 	Visitor* visitor = malloc(sizeof(visitor));
 	//TODO - check malloc
-	Result result = init_visitor(visitor, visitor_name, visitor_id);
+	result = init_visitor(visitor, visitor_name, visitor_id);
 	if( result != OK) {
 		return result;
 	}
+	
 	return OK;
 	//return visitor_enter_room(room, visitor, level, start_time);
 }
 
 
-
-
-
+Result system_room_of_visitor(ChallengeRoomSystem *sys, char *visitor_name, char **room_name) {
+	if (sys == NULL ) {
+		return NULL_PARAMETER;
+	}	
+	if (visitor_name == NULL || room_name == NULL) {
+		return ILLEGAL_PARAMETER;
+	}
+	Visitor* visitor = find_visitor_by_name(visitor_name);
+	if ( visitor != NULL ) {
+		return ALREADY_IN_ROOM;
+	}
+	room_of_visitor(visitor, room_name);
+	return NOT_IN_ROOM;
+}
 
 
 
@@ -229,6 +247,13 @@ ChallengeRoom* findRoomByName(ChallengeRoomSystem *sys, char* name) {
 	//printf("\n");
 	return NULL;
 }
+
+
+Visitor* find_visitor_by_name(char* visitor_name) {
+	//TODO - find visitor by name	
+	return NULL;
+}
+
 
 /*
 int isVisitorNowInRoom(ChallengeRoomSystem *sys, int visitor_id) {
