@@ -113,11 +113,17 @@ int main(int argc, char **argv)
 	
 	r=init_visitor(NULL, "name", 3);
 	ASSERT("2.7a - visitor_arrive" , r==NULL_PARAMETER)
-	Visitor* visitor = malloc(sizeof(Visitor));
+	Visitor *visitor = malloc(sizeof(*visitor));
 	r=init_visitor(visitor, NULL, 3);
 	ASSERT("2.7b - visitor_arrive" , r==NULL_PARAMETER)
+	r=init_visitor(visitor, "name", 3);
+	ASSERT("2.7c - visitor_arrive" , r==OK)
 
-
+	r=reset_visitor(NULL);
+	ASSERT("2.8a - visitor_arrive" , r==NULL_PARAMETER)
+	r=reset_visitor(visitor);
+	ASSERT("2.8b - visitor_arrive" , r==OK)
+	free(visitor);
 
 
 /*

@@ -47,7 +47,7 @@ Result init_visitor(Visitor *visitor, char *name, int id) {
 	if( visitor == NULL || name == NULL ) {
 		return NULL_PARAMETER;
 	}
-	visitor->visitor_name = malloc(strlen(visitor->visitor_name));
+	visitor->visitor_name = malloc(strlen(name));
 	if (visitor->visitor_name == NULL) {
 		return MEMORY_PROBLEM;
 	}
