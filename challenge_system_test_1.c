@@ -182,7 +182,7 @@ int main(int argc, char **argv)
 
 
 
-
+	printf("\n\n");
 	r=num_of_free_places_for_level(&(sys->challengeRooms[3]), Hard, &place);
 	ASSERT("3.1a - num_of_free_places_for_level" , r==OK && place == 2)
 	Visitor *visitor1 = malloc(sizeof(*visitor1));

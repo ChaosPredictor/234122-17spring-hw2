@@ -50,7 +50,7 @@ Result reset_room(ChallengeRoom *room);
 Result num_of_free_places_for_level(ChallengeRoom *room, Level level, int *places);
 
 Result change_room_name(ChallengeRoom *room, char *new_name);
-
+//Done
 Result room_of_visitor(Visitor *visitor, char **room_name);
 
 Result visitor_enter_room(ChallengeRoom *room, Visitor *visitor, Level level, int start_time);

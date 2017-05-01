@@ -113,7 +113,10 @@ Result room_of_visitor(Visitor *visitor, char **room_name) {
 	//room_name = malloc(
 	//TODO find room for visitor;
 	*room_name = malloc( strlen(*(visitor->room_name)) + 1 );
-	//TODO - check malloc
+	if (*room_name == NULL ) {
+		return MEMORY_PROBLEM;
+	}	
+//TODO - check malloc
 	strcpy(*room_name, *(visitor->room_name));
 	return OK;
 }
