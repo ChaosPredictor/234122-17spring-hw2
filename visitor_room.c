@@ -144,7 +144,7 @@ Result visitor_enter_room(ChallengeRoom *room, Visitor *visitor, Level level, in
 	}
 	room->challenges[index_of_challenge].start_time = start_time;
 	room->challenges[index_of_challenge].visitor = visitor;
-	visitor->room_name = malloc(sizeof(char**));
+	//visitor->room_name = malloc(sizeof(char**));
 	visitor->room_name = &(room->name);
 	//visitor->current_challenge = malloc(sizeof(struct SChallengeActivity));
 	visitor->current_challenge = &(room->challenges[index_of_challenge]);
@@ -156,14 +156,15 @@ Result visitor_quit_room(Visitor *visitor, int quit_time) {
 	if( visitor == NULL ) {
 		return NULL_PARAMETER;
 	}
+	if ( visitor->current_challenge == NULL ) {
+		return NOT_IN_ROOM;
+	}
 	//TODO - check if it's the best time
 	struct SChallengeActivity *challengeActivity = visitor->current_challenge;
 	challengeActivity->start_time = -1;
 	challengeActivity->visitor = NULL;
-	challengeActivity->challenge = NULL;
-	if ( challengeActivity == NULL ) {
-		return OK; //TODO change it
-	}
+	visitor->room_name = NULL;
+	visitor->current_challenge = NULL;
 	return OK;
 }
 

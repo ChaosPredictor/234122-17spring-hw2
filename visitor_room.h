@@ -56,7 +56,7 @@ Result room_of_visitor(Visitor *visitor, char **room_name);
 Result visitor_enter_room(ChallengeRoom *room, Visitor *visitor, Level level, int start_time);
 /* the challenge to be chosen is the lexicographically named smaller one that has
    the required level. assume all names are different. */
-
+//Done
 Result visitor_quit_room(Visitor *visitor, int quit_time);
 
 

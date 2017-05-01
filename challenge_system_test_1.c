@@ -180,9 +180,19 @@ int main(int argc, char **argv)
 	ASSERT("2.12c - room_of_visitor" , r==OK && strcmp(room_name2, "room_4")==0)
 	//printf("\n\n%s\n\n", room_name2);
 
+	r=visitor_quit_room(NULL, 17);
+	ASSERT("2.13a - visitor_quit_room" , r==NULL_PARAMETER)
+	r=visitor_quit_room(visitor, 17);
+	ASSERT("2.13b - visitor_quit_room" , r==OK)
 
+	Visitor *visitor0 = malloc(sizeof(*visitor0));
+	r=visitor_quit_room(visitor0, 17);
+	ASSERT("2.13c - visitor_quit_room" , r==NOT_IN_ROOM)
 
-	printf("\n\n");
+	//r=visitor_enter_room(&(sys->challengeRooms[3]), visitor, Easy, 15);
+	//ASSERT("2.11e - visitor_enter_room" , r==OK)
+
+	printf("\n\n\nfull tests\n\n\n");
 	r=num_of_free_places_for_level(&(sys->challengeRooms[3]), Hard, &place);
 	ASSERT("3.1a - num_of_free_places_for_level" , r==OK && place == 2)
 	Visitor *visitor1 = malloc(sizeof(*visitor1));
