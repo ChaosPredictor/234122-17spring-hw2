@@ -11,9 +11,9 @@ typedef struct SChallenge
    int best_time;
    int num_visits;
 } Challenge;
-
+//Done
 Result init_challenge(Challenge *challenge, int id, char *name, Level level);
-
+//Done
 Result reset_challenge(Challenge *challenge);
 
 Result change_name(Challenge *challenge, char *name);

@@ -77,7 +77,12 @@ Result init_room(ChallengeRoom *room, char *name, int num_challenges) {
 	if ( room->challenges == NULL) {
 		free(room->name);
 		return MEMORY_PROBLEM;
-	} 
+	}
+	for(int i = 0; i < num_challenges; i++) {
+		room->challenges[i].start_time = -1;
+		room->challenges[i].visitor = NULL;
+		room->challenges[i].challenge = NULL;
+	}
 	return OK;
 }
 
@@ -109,14 +114,10 @@ Result room_of_visitor(Visitor *visitor, char **room_name) {
 	if ( visitor == NULL || room_name == NULL )	{
 		return NULL_PARAMETER;
 	}
-	//printf("\n\nroom name: %s\n", *(visitor->room_name));
-	//room_name = malloc(
-	//TODO find room for visitor;
 	*room_name = malloc( strlen(*(visitor->room_name)) + 1 );
 	if (*room_name == NULL ) {
 		return MEMORY_PROBLEM;
 	}	
-//TODO - check malloc
 	strcpy(*room_name, *(visitor->room_name));
 	return OK;
 }
@@ -145,22 +146,26 @@ Result visitor_enter_room(ChallengeRoom *room, Visitor *visitor, Level level, in
 	room->challenges[index_of_challenge].visitor = visitor;
 	visitor->room_name = malloc(sizeof(char**));
 	visitor->room_name = &(room->name);
-	visitor->current_challenge = malloc(sizeof(struct SChallengeActivity));
+	//visitor->current_challenge = malloc(sizeof(struct SChallengeActivity));
 	visitor->current_challenge = &(room->challenges[index_of_challenge]);
 	return OK;
 }
 
-/*
-Result visitor_enter_room(ChallengeRoom *room, Visitor *visitor, Level level, int start_time) {
-	if ( isVisitorNowInRoom(visitor) != OK ) {
-		return ALREADY_IN_ROOM;
+Result visitor_quit_room(Visitor *visitor, int quit_time) {
+	//TODO time ligal
+	if( visitor == NULL ) {
+		return NULL_PARAMETER;
 	}
-	printf("\nvisitor arrived \n\n");
-	findChallengeInRoom(room, level);
-
+	//TODO - check if it's the best time
+	struct SChallengeActivity *challengeActivity = visitor->current_challenge;
+	challengeActivity->start_time = -1;
+	challengeActivity->visitor = NULL;
+	challengeActivity->challenge = NULL;
+	if ( challengeActivity == NULL ) {
+		return OK; //TODO change it
+	}
 	return OK;
-}*/
-
+}
 
 
 Result isVisitorNowInRoom(Visitor* visitor) {

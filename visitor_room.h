@@ -52,7 +52,7 @@ Result num_of_free_places_for_level(ChallengeRoom *room, Level level, int *place
 Result change_room_name(ChallengeRoom *room, char *new_name);
 //Done
 Result room_of_visitor(Visitor *visitor, char **room_name);
-
+//Done
 Result visitor_enter_room(ChallengeRoom *room, Visitor *visitor, Level level, int start_time);
 /* the challenge to be chosen is the lexicographically named smaller one that has
    the required level. assume all names are different. */
