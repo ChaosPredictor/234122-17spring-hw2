@@ -98,8 +98,7 @@ Result num_of_free_places_for_level(ChallengeRoom *room, Level level, int *place
 	int num_of_challenges = room->num_of_challenges;
 	for(int i = 0; i < num_of_challenges; i++) {
 		//printf("level: %u, saved: %u\n", level,room->challenges[i].challenge->level);
-		//TODO - check that the place free
-		if ( level == All_Levels || level == room->challenges[i].challenge->level ) {
+		if ( room->challenges[i].visitor == NULL && ( level == All_Levels || level == room->challenges[i].challenge->level) ) {
 			(*places)++;
 		}
 	}
@@ -127,9 +126,7 @@ Result visitor_enter_room(ChallengeRoom *room, Visitor *visitor, Level level, in
 	int num_of_challenges = room->num_of_challenges;
 	for(int i = 0; i < num_of_challenges; i++) {
 		//printf("level: %u, saved: %u\n", level,room->challenges[i].challenge->level);
-		//TODO - check that the place free
-		if ( level == All_Levels || level == room->challenges[i].challenge->level ) {
-			index_of_challenge = i;
+		if ( room->challenges[i].visitor == NULL && ( level == All_Levels || level == room->challenges[i].challenge->level) ) {			index_of_challenge = i;
 			break;
 		}
 	}

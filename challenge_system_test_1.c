@@ -162,8 +162,31 @@ int main(int argc, char **argv)
 	visitor->current_challenge = NULL;
 	r=visitor_enter_room(&(sys->challengeRooms[1]), visitor, Medium, 5);
 	ASSERT("2.11d - visitor_enter_room" , r==NO_AVAILABLE_CHALLENGES)
+
+
+
+
+
+
+	r=num_of_free_places_for_level(&(sys->challengeRooms[3]), Hard, &place);
+	ASSERT("3.1a - num_of_free_places_for_level" , r==OK && place == 2)
 	r=visitor_enter_room(&(sys->challengeRooms[3]), visitor, Hard, 25);
-	ASSERT("2.11e - visitor_enter_room" , r==OK)
+	ASSERT("3.1b - visitor_enter_room" , r==OK)
+	r=num_of_free_places_for_level(&(sys->challengeRooms[3]), Hard, &place);
+	ASSERT("3.1c - num_of_free_places_for_level" , r==OK && place == 1)
+	Visitor *visitor2 = malloc(sizeof(*visitor2));
+	r=visitor_enter_room(&(sys->challengeRooms[3]), visitor2, Hard, 30);
+	ASSERT("3.1d - visitor_enter_room" , r==OK)
+	r=num_of_free_places_for_level(&(sys->challengeRooms[3]), Hard, &place);
+	ASSERT("3.1e - num_of_free_places_for_level" , r==OK && place == 0)
+	Visitor *visitor3 = malloc(sizeof(*visitor3));
+	r=visitor_enter_room(&(sys->challengeRooms[3]), visitor3, Hard, 35);
+	ASSERT("3.1f - visitor_enter_room" , r==NO_AVAILABLE_CHALLENGES)
+	r=num_of_free_places_for_level(&(sys->challengeRooms[3]), Hard, &place);
+	ASSERT("3.1g - num_of_free_places_for_level" , r==OK && place == 0)
+
+
+
 
 	free(visitor);
 
