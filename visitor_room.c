@@ -106,7 +106,15 @@ Result num_of_free_places_for_level(ChallengeRoom *room, Level level, int *place
 }
 
 Result room_of_visitor(Visitor *visitor, char **room_name) {
+	if ( visitor == NULL || room_name == NULL )	{
+		return NULL_PARAMETER;
+	}
+	//printf("\n\nroom name: %s\n", *(visitor->room_name));
+	//room_name = malloc(
 	//TODO find room for visitor;
+	*room_name = malloc( strlen(*(visitor->room_name)) + 1 );
+	//TODO - check malloc
+	strcpy(*room_name, *(visitor->room_name));
 	return OK;
 }
 

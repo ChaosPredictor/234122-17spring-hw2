@@ -34,19 +34,19 @@ typedef struct SChallengeRoom
    ChallengeActivity *challenges;
 } ChallengeRoom;
 
-
+//Done
 Result init_challenge_activity(ChallengeActivity *activity, Challenge *challenge);
-
+//Done
 Result reset_challenge_activity(ChallengeActivity *activity);
-
+//Done
 Result init_visitor(Visitor *visitor, char *name, int id);
-
+//Done
 Result reset_visitor(Visitor *visitor);
-
+//Done
 Result init_room(ChallengeRoom *room, char *name, int num_challenges);
-
+//Done
 Result reset_room(ChallengeRoom *room);
-
+//Done
 Result num_of_free_places_for_level(ChallengeRoom *room, Level level, int *places);
 
 Result change_room_name(ChallengeRoom *room, char *new_name);

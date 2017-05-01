@@ -64,7 +64,6 @@ Result create_system(char *init_file, ChallengeRoomSystem **sys) {
 		fclose(file);				
 		return MEMORY_PROBLEM;
 	}
-
 	int id;
 	unsigned int level;
 	for(int i = 0; i < (*sys)->numberOfChallenges; i++) {
@@ -112,7 +111,6 @@ Result create_system(char *init_file, ChallengeRoomSystem **sys) {
 					fscanf(file, " %d", &tempNumber);
 					Challenge* challenge = findChallengeById(*sys, tempNumber);
 					init_challenge_activity(&((*sys)->challengeRooms[i].challenges[j]), challenge);
-					//printf("  challenge name: %s\n", chall->name);
 				}	
 
 		} 
@@ -140,19 +138,26 @@ Result visitor_arrive(ChallengeRoomSystem *sys, char *room_name, char *visitor_n
 	int places = 0;	
 	Result result = num_of_free_places_for_level(room, level, &places);
 	if( result != OK ) {
-		return OK;
+		return result;
 	}
 	if( places == 0 ) {
 		return NO_AVAILABLE_CHALLENGES;
 	}
-	//TODO - check if your in some room;
 	Visitor* visitor = malloc(sizeof(visitor));
-	//TODO - check malloc
+	if( visitor == NULL ) {
+		return MEMORY_PROBLEM;
+	}
 	result = init_visitor(visitor, visitor_name, visitor_id);
 	if( result != OK) {
+		free(visitor);
 		return result;
 	}
-
+	result = visitor_enter_room(room, visitor, level, start_time);
+	if (result != OK ) {
+		free(visitor);		
+		return result;
+	}
+	
 
 	
 /*
@@ -163,6 +168,8 @@ Result visitor_arrive(ChallengeRoomSystem *sys, char *room_name, char *visitor_n
 	}
 */
 	
+
+	//TODO - update start time
 	return OK;
 	//return visitor_enter_room(room, visitor, level, start_time);
 }

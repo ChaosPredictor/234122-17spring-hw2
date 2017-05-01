@@ -9,7 +9,7 @@
    if (!(test_condition)) {printf("\nTEST %s FAILED", test_number); } \
    else printf("\nTEST %s OK", test_number);
 
-#define NAME_LENG 51 //Max leng 50 + 1 of end of string
+#define MAX_NAME_LENG 51 //Max leng 50 + 1 of end of string
 
 
 int main(int argc, char **argv)
@@ -128,7 +128,7 @@ int main(int argc, char **argv)
 	ASSERT("2.8b - reset_visitor" , r==OK)
 
 
-  char* room_name = malloc(NAME_LENG);
+  char* room_name = malloc(MAX_NAME_LENG);
 	r=system_room_of_visitor(NULL, "name", &room_name);
 	ASSERT("2.9a - system_room_of_visitor" , r==NULL_PARAMETER)
 	r=system_room_of_visitor(sys, NULL, &room_name);
@@ -150,7 +150,9 @@ int main(int argc, char **argv)
 	ASSERT("2.10a - num_of_free_places_for_level" , r==OK && place == 4)
 	//TODO - check if challenge was taken
 
-	
+	r=init_visitor(visitor, "name", 3);
+	ASSERT("2.11 - init_visitor" , r==OK)
+
 	r=visitor_enter_room(NULL, visitor, Hard, 5);
 	ASSERT("2.11a - visitor_enter_room" , r==NULL_PARAMETER)
 	r=visitor_enter_room(&(sys->challengeRooms[3]), NULL, Hard, 5);
@@ -162,15 +164,29 @@ int main(int argc, char **argv)
 	visitor->current_challenge = NULL;
 	r=visitor_enter_room(&(sys->challengeRooms[1]), visitor, Medium, 5);
 	ASSERT("2.11d - visitor_enter_room" , r==NO_AVAILABLE_CHALLENGES)
+	r=visitor_enter_room(&(sys->challengeRooms[3]), visitor, Easy, 15);
+	ASSERT("2.11e - visitor_enter_room" , r==OK)
 
 
+
+	//char* room_name = malloc(sizeof(char) * MAX_NAME_LENG );
+	char *room_name2 = malloc(sizeof(char*));	
+	r=room_of_visitor(NULL, &room_name2);
+	ASSERT("2.12a - room_of_visitor" , r==NULL_PARAMETER)
+	r=room_of_visitor(visitor, NULL);
+	ASSERT("2.12b - room_of_visitor" , r==NULL_PARAMETER)
+	//work because step 2.11e
+	r=room_of_visitor(visitor, &room_name2);
+	ASSERT("2.12c - room_of_visitor" , r==OK && strcmp(room_name2, "room_4")==0)
+	//printf("\n\n%s\n\n", room_name2);
 
 
 
 
 	r=num_of_free_places_for_level(&(sys->challengeRooms[3]), Hard, &place);
 	ASSERT("3.1a - num_of_free_places_for_level" , r==OK && place == 2)
-	r=visitor_enter_room(&(sys->challengeRooms[3]), visitor, Hard, 25);
+	Visitor *visitor1 = malloc(sizeof(*visitor1));
+	r=visitor_enter_room(&(sys->challengeRooms[3]), visitor1, Hard, 25);
 	ASSERT("3.1b - visitor_enter_room" , r==OK)
 	r=num_of_free_places_for_level(&(sys->challengeRooms[3]), Hard, &place);
 	ASSERT("3.1c - num_of_free_places_for_level" , r==OK && place == 1)
