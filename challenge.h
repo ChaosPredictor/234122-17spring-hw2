@@ -17,7 +17,7 @@ Result init_challenge(Challenge *challenge, int id, char *name, Level level);
 Result reset_challenge(Challenge *challenge);
 //Done
 Result change_name(Challenge *challenge, char *name);
-
+//Done
 Result set_best_time_of_challenge(Challenge *challenge, int time);
 
 Result best_time_of_challenge(Challenge *challenge, int *time);

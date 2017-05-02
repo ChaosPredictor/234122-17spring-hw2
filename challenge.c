@@ -48,6 +48,13 @@ Result set_best_time_of_challenge(Challenge *challenge, int time) {
 	if ( challenge == NULL) {
 		return NULL_PARAMETER;
 	}
+  if ( time < 0 || time < challenge->best_time ) {
+		return ILLEGAL_PARAMETER;
+	}
 	challenge->best_time = time;	
+	return OK;
+}
+
+Result best_time_of_challenge(Challenge *challenge, int *time) {
 	return OK;
 }
