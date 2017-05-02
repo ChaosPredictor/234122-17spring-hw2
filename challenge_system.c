@@ -142,14 +142,17 @@ Result destroy_system(ChallengeRoomSystem *sys, int destroy_time, char **most_po
 Result visitor_arrive(ChallengeRoomSystem *sys, char *room_name, char *visitor_name, int visitor_id, Level level, int start_time) {
 
 	if( sys == NULL) {
+		printf("1\n");
 		return NULL_PARAMETER;
 	}
 
 	if( sys->lastTime > start_time) {
+		printf("2\n");
 		return ILLEGAL_TIME;
 	}
 
 	if( (room_name == NULL) || (visitor_name == NULL) ) {
+		printf("3\n");
 		return ILLEGAL_PARAMETER;
 	}
 
@@ -157,29 +160,35 @@ Result visitor_arrive(ChallengeRoomSystem *sys, char *room_name, char *visitor_n
 	int places = 0;	
 	Result result = num_of_free_places_for_level(room, level, &places);
 	if( result != OK ) {
+		printf("\n4\n");
 		return result;
 	}
 	if( places == 0 ) {
+		printf("5\n");
 		return NO_AVAILABLE_CHALLENGES;
 	}
 
 	if( findVisitorNodebyId(sys, visitor_id) != NULL ) {
+		printf("6\n");
 		return ALREADY_IN_ROOM;
 	}
 
 	Visitor* visitor = malloc(sizeof(*visitor));
 	if( visitor == NULL ) {
+		printf("7\n");
 		return MEMORY_PROBLEM;
 	}
 	//printf("\n\n	NAME:%s\n\n", visitor_name);	
 	result = init_visitor(visitor, visitor_name, visitor_id);
 	if( result != OK) {
 		free(visitor);
+		printf("8\n");
 		return result;
 	}
 	VisitorNode* visitorNode = createVisitorNode(visitor);
 	if(visitorNode == NULL ) {
 		free(visitor);
+		printf("9\n");
 		return MEMORY_PROBLEM;
 	}
 	VisitorNode* pVisitor = sys->visitor_head;
@@ -190,10 +199,12 @@ Result visitor_arrive(ChallengeRoomSystem *sys, char *room_name, char *visitor_n
 	result = visitor_enter_room(room, visitor, level, start_time);
 	if (result != OK ) {
 		free(visitor);		
+		printf("10\n");
 		return result;
 	}
 	sys->lastTime = start_time;
 	//printAllVisitor(sys);
+	printf("0\n");
 	return OK;
 }
 
@@ -242,6 +253,22 @@ Result system_room_of_visitor(ChallengeRoomSystem *sys, char *visitor_name, char
 	return NOT_IN_ROOM;
 }
 
+Result change_system_room_name(ChallengeRoomSystem *sys, char *current_name,  char *new_name) {
+	//TODO testing
+	if( sys == NULL || current_name == NULL || new_name == NULL ) {
+		return NULL_PARAMETER;
+	}
+	ChallengeRoom *room = findRoomByName(sys, current_name);
+	if ( room == NULL ) {
+		return ILLEGAL_PARAMETER;
+	}
+	room->name = realloc(room->name, sizeof(char) * (strlen(new_name) + 1));
+	if ( room->name == NULL) {
+		return MEMORY_PROBLEM;
+	} 
+	strcpy(room->name, new_name);
+	return OK;
+}
 
 
 Result nameRead(char* name, FILE* inputFile) {

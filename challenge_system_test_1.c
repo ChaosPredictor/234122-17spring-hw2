@@ -32,7 +32,7 @@ int main(int argc, char **argv)
    //r=best_time_of_system_challenge(sys, "challenge_2", &time);
    //ASSERT("1.3" , time==4)
 
-   //r=change_system_room_name(sys, "room_1", "room_111");
+   r=change_system_room_name(sys, "room_1", "room_111");
 
    r=visitor_arrive(sys, "room_1", "visitor_3", 203, Easy, 8);
    ASSERT("1.4" , r==ILLEGAL_TIME)
