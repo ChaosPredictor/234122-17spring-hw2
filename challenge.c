@@ -71,3 +71,13 @@ Result inc_num_visits(Challenge *challenge) {
 	challenge->num_visits += 1;
 	return OK;
 }
+
+//TODO - change function name
+Result num_visits_function(Challenge *challenge, int *visits) {
+	//TODO - to ask what to do if int* NULL
+	if ( challenge == NULL || visits == NULL) {
+		return NULL_PARAMETER;
+	}
+	*visits = challenge->num_visits;	
+	return OK;
+}

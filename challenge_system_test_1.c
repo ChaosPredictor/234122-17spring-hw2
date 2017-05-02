@@ -96,6 +96,18 @@ int main(int argc, char **argv)
 	r = inc_num_visits(challenge);
 	ASSERT("2.00b - inc_num_visits" , r==OK && challenge->num_visits == 1)
 
+	int visits = -1;
+	r = num_visits_function(NULL, &visits);
+	ASSERT("2.00a - num_visits" , r==NULL_PARAMETER)
+	r = num_visits_function(challenge, NULL);
+	ASSERT("2.00b - num_visits" , r==NULL_PARAMETER)
+	challenge->num_visits = 0;
+	ASSERT("2.00cPre - num_visits" , visits == -1)
+	r = num_visits_function(challenge, &visits);
+	ASSERT("2.00c - num_visits" , r==OK && visits == 0)
+	r = inc_num_visits(challenge);
+	r = num_visits_function(challenge, &visits);
+	ASSERT("2.00d - num_visits" , r==OK && visits == 1)
 
 
 

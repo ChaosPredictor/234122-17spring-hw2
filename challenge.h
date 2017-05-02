@@ -21,10 +21,10 @@ Result change_name(Challenge *challenge, char *name);
 Result set_best_time_of_challenge(Challenge *challenge, int time);
 //Done
 Result best_time_of_challenge(Challenge *challenge, int *time);
-
+//Done
 Result inc_num_visits(Challenge *challenge);
-
-Result num_visits(Challenge *challenge, int *visits);
+//TODO - change function name
+Result num_visits_function(Challenge *challenge, int *visits);
 
 #endif // CHALLENGE_H_
 
