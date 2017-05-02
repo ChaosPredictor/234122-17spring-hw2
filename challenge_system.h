@@ -20,7 +20,7 @@ Result destroy_system(ChallengeRoomSystem *sys, int destroy_time,
 //Done
 Result visitor_arrive(ChallengeRoomSystem *sys, char *room_name, char *visitor_name, int visitor_id, Level level, int start_time);
 
-
+//Done
 Result visitor_quit(ChallengeRoomSystem *sys, int visitor_id, int quit_time);
 
 

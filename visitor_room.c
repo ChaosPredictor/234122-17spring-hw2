@@ -38,11 +38,13 @@ Result init_visitor(Visitor *visitor, char *name, int id) {
 	if( visitor == NULL || name == NULL ) {
 		return NULL_PARAMETER;
 	}
-	visitor->visitor_name = malloc(strlen(name));
+	visitor->visitor_name = malloc(sizeof(char) * (strlen(name)+1));
 	if (visitor->visitor_name == NULL) {
 		return MEMORY_PROBLEM;
 	}
+
 	strcpy(visitor->visitor_name, name);
+	//printf("\n\nNAME(in init):%s\n\n", visitor->visitor_name);	
 	visitor->visitor_id = id;
 
 	visitor->room_name = NULL;
@@ -56,7 +58,14 @@ Result reset_visitor(Visitor *visitor) {
 	if( visitor == NULL ) {
 		return NULL_PARAMETER;
 	}
+	//printf("\n\nNAME(in reser_visit):%s\n\n", visitor->visitor_name);	
+	//TODO - can understand why I got core dumped
+	//free(visitor->visitor_name);
 	free(visitor->visitor_name);
+	//if (visitor->visitor_name != NULL) {
+	//	free(visitor->visitor_name);
+	//	visitor->visitor_name = NULL; // Reset to be safe.
+	//}
 	return OK;
 }
 
@@ -170,6 +179,7 @@ Result visitor_quit_room(Visitor *visitor, int quit_time) {
 	challengeActivity->visitor = NULL;
 	visitor->room_name = NULL;
 	visitor->current_challenge = NULL;
+	reset_visitor(visitor);
 	return OK;
 }
 

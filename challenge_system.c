@@ -114,7 +114,7 @@ Result create_system(char *init_file, ChallengeRoomSystem **sys) {
 	int numberOfChallenges;
 	for(int i = 0; i < (*sys)->numberOfChallengeRooms; i++) {
 		if ( nameRead(tempName, file) == OK && fscanf(file, " %d", &numberOfChallenges)) {
-				printf("Room Name: %s & chall: %d\n", tempName, numberOfChallenges);
+				//printf("Room Name: %s & chall: %d\n", tempName, numberOfChallenges);
 				result = init_room(&((*sys)->challengeRooms[i]), tempName, numberOfChallenges);
 				//TODO - put challenges laxecogfi...
 				for(int j = 0; j < numberOfChallenges; j++) {
@@ -167,10 +167,11 @@ Result visitor_arrive(ChallengeRoomSystem *sys, char *room_name, char *visitor_n
 		return ALREADY_IN_ROOM;
 	}
 
-	Visitor* visitor = malloc(sizeof(visitor));
+	Visitor* visitor = malloc(sizeof(*visitor));
 	if( visitor == NULL ) {
 		return MEMORY_PROBLEM;
 	}
+	//printf("\n\n	NAME:%s\n\n", visitor_name);	
 	result = init_visitor(visitor, visitor_name, visitor_id);
 	if( result != OK) {
 		free(visitor);
@@ -214,7 +215,10 @@ Result visitor_quit(ChallengeRoomSystem *sys, int visitor_id, int quit_time) {
 	if (result != OK ) {
 		return result;
 	}
+	Visitor* keepVisitor = visitorNode->visitor;
 	removeVisitorNodebyId(sys, visitor_id);
+	free(keepVisitor);
+	//TODO can free visitor	
 	//printf("\n");
 	//printAllVisitor(sys);	
 	//Visitor* visitor = visitorNode->visitor;
@@ -364,9 +368,11 @@ Result removeVisitorNodebyId(ChallengeRoomSystem *sys, int id) {
 	VisitorNode* pVisitor = sys->visitor_head;
 	if( pVisitor->next->visitor->visitor_id == id ) {
 		if ( pVisitor->next == NULL ) {
+			free(sys->visitor_head);
 			sys->visitor_head = NULL;
 			return OK;
 		} else {
+			free(pVisitor->next);
 			pVisitor->next = pVisitor->next->next;
 			return OK;
 		}
@@ -375,9 +381,10 @@ Result removeVisitorNodebyId(ChallengeRoomSystem *sys, int id) {
 		pVisitor = pVisitor->next;
 		if( pVisitor->next->visitor->visitor_id == id ) {
 			if( pVisitor->next->next == NULL ) {
-				pVisitor->next = NULL;
+				free(pVisitor->next);
 				return OK;
 			} else {
+				free(pVisitor->next);
 				pVisitor->next = pVisitor->next->next;
 				return OK;
 			}
