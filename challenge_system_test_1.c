@@ -64,16 +64,15 @@ int main(int argc, char **argv)
 
    r=system_room_of_visitor(sys, "visitor_3", &room);
    ASSERT("1.11" , r==OK && room!=NULL && strcmp(room, "room_111")==0)
-   //ASSERT("1.11" , r==OK)
    free(room);
 
-   //r=all_visitors_quit(sys, 17);
+   r=all_visitors_quit(sys, 17);
 
-   //r=best_time_of_system_challenge(sys, "challenge_1111", &time);
-   //ASSERT("1.12" , time==9)
+   r=best_time_of_system_challenge(sys, "challenge_1111", &time);
+   ASSERT("1.12" , time==9)
 
-   //r=best_time_of_system_challenge(sys, "challenge_4", &time);
-   //ASSERT("1.13" , time==2)
+   r=best_time_of_system_challenge(sys, "challenge_4", &time);
+   ASSERT("1.13" , time==2)
 
    //char *most_popular_challenge=NULL, *challenge_best_time=NULL;
    //r=destroy_system(sys, 18, &most_popular_challenge, &challenge_best_time);

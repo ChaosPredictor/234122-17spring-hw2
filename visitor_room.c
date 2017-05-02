@@ -166,6 +166,7 @@ Result visitor_enter_room(ChallengeRoom *room, Visitor *visitor, Level level, in
 }
 
 Result visitor_quit_room(Visitor *visitor, int quit_time) {
+	//printf("\nvisitor %s quit\n", visitor->visitor_name);
 	//TODO time ligal
 	if( visitor == NULL ) {
 		return NULL_PARAMETER;

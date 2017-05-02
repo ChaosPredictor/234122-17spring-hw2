@@ -235,12 +235,37 @@ Result visitor_quit(ChallengeRoomSystem *sys, int visitor_id, int quit_time) {
 	//printAllVisitor(sys);	
 	//Visitor* visitor = visitorNode->visitor;
 	//free(visitor);
+	//TODO - why memory problem?
 	sys->lastTime = quit_time;
 	return OK;
 }
 
 Result all_visitors_quit(ChallengeRoomSystem *sys, int quit_time) {
+	//TODO - testing
+	if( sys == NULL) {
+		return NULL_PARAMETER;
+	}
+	if( sys->lastTime > quit_time) {
+		return ILLEGAL_TIME;
+	}
 
+	Result result;
+	VisitorNode* pVisitor = sys->visitor_head, *temp;
+	
+	while ( pVisitor->next ) {
+		//printf("\nvisitor %s left\n", pVisitor->visitor->visitor_name);
+		temp = pVisitor;
+		pVisitor = temp->next;
+		//printf("\nvisitor %s left\n", pVisitor->visitor->visitor_name);
+		//printf("run\n");
+		result = visitor_quit_room(pVisitor->visitor, quit_time);
+		if (result != OK ) {
+			return result;
+		}
+		//printf("\nvisitor %s left\n", pVisitor->visitor->visitor_name);
+		free(temp->visitor);
+    free(temp);
+	}	
 	return OK;
 }
 
