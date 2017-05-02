@@ -142,6 +142,7 @@ Result visitor_enter_room(ChallengeRoom *room, Visitor *visitor, Level level, in
 			break;
 		}
 	}
+	//TODO - inc_num_visitis
 	room->challenges[index_of_challenge].start_time = start_time;
 	room->challenges[index_of_challenge].visitor = visitor;
 	//visitor->room_name = malloc(sizeof(char**));

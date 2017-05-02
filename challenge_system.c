@@ -157,21 +157,8 @@ Result visitor_arrive(ChallengeRoomSystem *sys, char *room_name, char *visitor_n
 		free(visitor);		
 		return result;
 	}
-	
-
-	
-/*
-  char* room = malloc(NAME_LENG);	
-	Result result = system_room_of_visitor(sys, visitor_name, &room);
-	if( result == ALREADY_IN_ROOM) {
-		return ALREADY_IN_ROOM;
-	}
-*/
-	
-
-	//TODO - update start time
+	//TODO add visitor to linked list or maybe not
 	return OK;
-	//return visitor_enter_room(room, visitor, level, start_time);
 }
 
 

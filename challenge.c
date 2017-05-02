@@ -23,11 +23,23 @@ Result init_challenge(Challenge *challenge, int id, char *name, Level level) {
 	return OK;
 }
 
-
 Result reset_challenge(Challenge *challenge) {
 	if ( challenge == NULL) {
 		return NULL_PARAMETER;
 	}
 	free(challenge->name);
 	return OK;
+}
+
+Result change_name(Challenge *challenge, char *name) {
+	if ( name == NULL || challenge == NULL) {
+		return NULL_PARAMETER;
+	} 
+	challenge->name = realloc(challenge->name, sizeof(char) * (strlen(name) + 1));
+	if ( challenge->name == NULL) {
+		return MEMORY_PROBLEM;
+	} 
+	strcpy(challenge->name, name);
+	return OK;
+
 }

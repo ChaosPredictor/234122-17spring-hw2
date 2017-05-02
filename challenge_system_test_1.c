@@ -56,8 +56,17 @@ int main(int argc, char **argv)
 		r = init_challenge(challenge, 2, NULL, 1);
 		ASSERT("2.0c - init_challenge" , r==NULL_PARAMETER)
 		r = init_challenge(challenge, 2, "name", 1);
-		ASSERT("2.0d - init_challenge" , r==OK)
+		ASSERT("2.0d - init_challenge" , r==OK && strcmp(challenge->name,"name") == 0)
 	}
+
+	r = change_name(NULL, "newName");
+	ASSERT("2.00a - change_name" , r==NULL_PARAMETER)
+	r = change_name(challenge, NULL);
+	ASSERT("2.00b - change_name" , r==NULL_PARAMETER)
+	ASSERT("2.00cPre - change_name" , strcmp(challenge->name,"name") == 0)	
+	r = change_name(challenge, "newName");
+	ASSERT("2.00c - change_name" , r==OK && strcmp(challenge->name,"newName") == 0)
+
 
 	r = reset_challenge(NULL);
 	ASSERT("2.1a - reset_challenge" , r==NULL_PARAMETER)
@@ -188,6 +197,10 @@ int main(int argc, char **argv)
 	Visitor *visitor0 = malloc(sizeof(*visitor0));
 	r=visitor_quit_room(visitor0, 17);
 	ASSERT("2.13c - visitor_quit_room" , r==NOT_IN_ROOM)
+
+
+
+
 
 	//r=visitor_enter_room(&(sys->challengeRooms[3]), visitor, Easy, 15);
 	//ASSERT("2.11e - visitor_enter_room" , r==OK)
