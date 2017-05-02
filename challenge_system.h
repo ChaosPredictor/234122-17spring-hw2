@@ -29,7 +29,7 @@ Result all_visitors_quit(ChallengeRoomSystem *sys, int quit_time);
 
 Result system_room_of_visitor(ChallengeRoomSystem *sys, char *visitor_name, char **room_name);
 
-
+//Done
 Result change_challenge_name(ChallengeRoomSystem *sys, int challenge_id, char *new_name);
 
 //Done

@@ -153,7 +153,10 @@ Result visitor_enter_room(ChallengeRoom *room, Visitor *visitor, Level level, in
 		}
 	}
 	//TODO - inc_num_visitis
-	//init activity
+	Result result = inc_num_visits(room->challenges[index_of_challenge].challenge);
+	if( result != OK ) {
+		return result;
+	}
 	room->challenges[index_of_challenge].start_time = start_time;
 	room->challenges[index_of_challenge].visitor = visitor;
 	//init visitor

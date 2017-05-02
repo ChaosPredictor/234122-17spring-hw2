@@ -52,10 +52,11 @@ int main(int argc, char **argv)
 
    ASSERT("1.8" , time==0)
 
-   //char *namep=NULL;
-   //r=most_popular_challenge(sys, &namep);
-   //ASSERT("1.9" , namep!=NULL && strcmp(namep, "challenge_1111")==0)
-   //free(namep);
+   char *namep=NULL;
+   r=most_popular_challenge(sys, &namep);
+    ASSERT("1.9" , namep!=NULL && strcmp(namep, "challenge_1111")==0)
+   //ASSERT("1.9" , namep!=NULL )
+   free(namep);
 
    char *room=NULL;
    r=system_room_of_visitor(sys, "visitor_4", &room);

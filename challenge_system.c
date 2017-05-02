@@ -7,7 +7,7 @@
 
 #include "challenge_system.h"
 
-#define NAME_LENG 51 //Max leng 50 + 1 of end of string
+#define MAX_NAME_LENG 51 //Max leng 50 + 1 of end of string
 
 //typedef char* Name;
 
@@ -50,7 +50,7 @@ Result create_system(char *init_file, ChallengeRoomSystem **sys) {
 		return MEMORY_PROBLEM;
 	}
 
-  char tempName[NAME_LENG] = "";
+  char tempName[MAX_NAME_LENG] = "";
 	nameRead(tempName, file);
 	//TODO - check return
 	(*sys)->name = malloc(strlen(tempName));
@@ -304,6 +304,38 @@ Result best_time_of_system_challenge(ChallengeRoomSystem *sys, char *challenge_n
 	return OK;
 }
 
+
+Result most_popular_challenge(ChallengeRoomSystem *sys, char **challenge_name) {
+	//TODO testing
+	if( sys == NULL || challenge_name == NULL ) {
+		return NULL_PARAMETER;
+	}
+	int number_of_challenges = (*sys).numberOfChallenges;
+	int max = 0, temp;
+	char tempName[MAX_NAME_LENG] = "";
+	*challenge_name = NULL;
+	for(int i = 0; i < number_of_challenges; i++) {
+		//printf("number OV: %d\n", (*sys).challenges[i].num_visits);
+		temp = (*sys).challenges[i].num_visits;
+		if ( temp > max) {
+			max = (*sys).challenges[i].num_visits;
+			strcpy(tempName, (*sys).challenges[i].name);
+		} else if( temp == max && strcmp(tempName, (*sys).challenges[i].name) > 0) {
+			strcpy(tempName, (*sys).challenges[i].name);
+		}
+	}
+	//printf("tempName: %s\n", tempName);
+	if ( strcmp(tempName, "") != 0 ) {
+		*challenge_name = malloc(sizeof(char) * (strlen(tempName) + 1) );
+		if( *challenge_name == NULL ) {
+			return MEMORY_PROBLEM;
+		}
+		strcpy(*challenge_name, tempName);
+	}
+	return OK;
+}
+
+//TODO private
 Result nameRead(char* name, FILE* inputFile) {
 	if (name == NULL) {
 		return NULL_PARAMETER;
