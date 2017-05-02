@@ -56,5 +56,10 @@ Result set_best_time_of_challenge(Challenge *challenge, int time) {
 }
 
 Result best_time_of_challenge(Challenge *challenge, int *time) {
+	//TODO - to ask what to do if int* NULL
+	if ( challenge == NULL || time == NULL) {
+		return NULL_PARAMETER;
+	}
+	*time = challenge->best_time;
 	return OK;
 }

@@ -79,6 +79,16 @@ int main(int argc, char **argv)
 	ASSERT("2.00d - set_best_time_of_challenge" , r==ILLEGAL_PARAMETER && challenge->best_time == 25)
 
 
+	int time = 0;
+	r = best_time_of_challenge(NULL, &time);
+	ASSERT("2.00a - best_time_of_challenge" , r==NULL_PARAMETER)
+	r = best_time_of_challenge(challenge, NULL);
+	ASSERT("2.00b - best_time_of_challenge" , r==NULL_PARAMETER)
+	r = set_best_time_of_challenge(challenge, 30);
+	ASSERT("2.00cPre - best_time_of_challenge" , r==OK && time == 0)
+	r = best_time_of_challenge(challenge, &time);
+	ASSERT("2.00c - best_time_of_challenge" , r==OK && time == 30)
+
 
 	r = reset_challenge(NULL);
 	ASSERT("2.1a - reset_challenge" , r==NULL_PARAMETER)
