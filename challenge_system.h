@@ -32,7 +32,7 @@ Result system_room_of_visitor(ChallengeRoomSystem *sys, char *visitor_name, char
 
 Result change_challenge_name(ChallengeRoomSystem *sys, int challenge_id, char *new_name);
 
-
+//Done
 Result change_system_room_name(ChallengeRoomSystem *sys, char *current_name, char *new_name);
 
 

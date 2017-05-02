@@ -22,6 +22,7 @@ Result numberRead(int* number, FILE* inputFile);
 Result challengeRead(Challenge* challenge, FILE* inputFile);
 Result challengeRoomRead(ChallengeRoom* challengeRoom, FILE* inputFile);
 Challenge* findChallengeById(ChallengeRoomSystem *sys, int id);
+Challenge* findChallengeByName(ChallengeRoomSystem *sys, char *name);
 ChallengeRoom* findRoomByName(ChallengeRoomSystem *sys, char* name);
 Visitor* find_visitor_by_name(char* visitor_name);
 VisitorNode* createVisitorNode(Visitor* visitor);
@@ -142,17 +143,17 @@ Result destroy_system(ChallengeRoomSystem *sys, int destroy_time, char **most_po
 Result visitor_arrive(ChallengeRoomSystem *sys, char *room_name, char *visitor_name, int visitor_id, Level level, int start_time) {
 
 	if( sys == NULL) {
-		printf("1\n");
+		//printf("1\n");
 		return NULL_PARAMETER;
 	}
 
 	if( sys->lastTime > start_time) {
-		printf("2\n");
+		//printf("2\n");
 		return ILLEGAL_TIME;
 	}
 
 	if( (room_name == NULL) || (visitor_name == NULL) ) {
-		printf("3\n");
+		//printf("3\n");
 		return ILLEGAL_PARAMETER;
 	}
 
@@ -160,35 +161,35 @@ Result visitor_arrive(ChallengeRoomSystem *sys, char *room_name, char *visitor_n
 	int places = 0;	
 	Result result = num_of_free_places_for_level(room, level, &places);
 	if( result != OK ) {
-		printf("\n4\n");
+		//printf("\n4\n");
 		return result;
 	}
 	if( places == 0 ) {
-		printf("5\n");
+		//printf("5\n");
 		return NO_AVAILABLE_CHALLENGES;
 	}
 
 	if( findVisitorNodebyId(sys, visitor_id) != NULL ) {
-		printf("6\n");
+		//printf("6\n");
 		return ALREADY_IN_ROOM;
 	}
 
 	Visitor* visitor = malloc(sizeof(*visitor));
 	if( visitor == NULL ) {
-		printf("7\n");
+		//printf("7\n");
 		return MEMORY_PROBLEM;
 	}
 	//printf("\n\n	NAME:%s\n\n", visitor_name);	
 	result = init_visitor(visitor, visitor_name, visitor_id);
 	if( result != OK) {
 		free(visitor);
-		printf("8\n");
+		//printf("8\n");
 		return result;
 	}
 	VisitorNode* visitorNode = createVisitorNode(visitor);
 	if(visitorNode == NULL ) {
 		free(visitor);
-		printf("9\n");
+		//printf("9\n");
 		return MEMORY_PROBLEM;
 	}
 	VisitorNode* pVisitor = sys->visitor_head;
@@ -199,12 +200,12 @@ Result visitor_arrive(ChallengeRoomSystem *sys, char *room_name, char *visitor_n
 	result = visitor_enter_room(room, visitor, level, start_time);
 	if (result != OK ) {
 		free(visitor);		
-		printf("10\n");
+		//printf("10\n");
 		return result;
 	}
 	sys->lastTime = start_time;
 	//printAllVisitor(sys);
-	printf("0\n");
+	//printf("0\n");
 	return OK;
 }
 
@@ -270,6 +271,20 @@ Result change_system_room_name(ChallengeRoomSystem *sys, char *current_name,  ch
 	return OK;
 }
 
+Result best_time_of_system_challenge(ChallengeRoomSystem *sys, char *challenge_name, int *time) {
+	if( sys == NULL || challenge_name == NULL || time == NULL ) {
+		return NULL_PARAMETER;
+	}
+	Challenge* challenge = findChallengeByName(sys, challenge_name);
+	if( challenge == NULL ) {
+		return ILLEGAL_PARAMETER;
+	}
+	Result result = best_time_of_challenge(challenge, time);
+	if( result != OK ) {
+		return result;
+	}
+	return OK;
+}
 
 Result nameRead(char* name, FILE* inputFile) {
 	if (name == NULL) {
@@ -333,7 +348,20 @@ Challenge* findChallengeById(ChallengeRoomSystem *sys, int id) {
 			//printf("%d %s  ",i , (*sys).challenges[i].name);
 		}
 	}
-	printf("\n");
+	//printf("\n");
+	return NULL;
+}
+
+Challenge* findChallengeByName(ChallengeRoomSystem *sys, char *name) {
+	//printf("temp %d\n", (*sys).numberOfChallenges);
+	int number_of_challenges = (*sys).numberOfChallenges;
+	for(int i = 0; i < number_of_challenges; i++) {
+		if ( strcmp((*sys).challenges[i].name, name) == 0) {
+			return &((*sys).challenges[i]);
+			//printf("%d %s  ",i , (*sys).challenges[i].name);
+		}
+	}
+	//printf("\n");
 	return NULL;
 }
 

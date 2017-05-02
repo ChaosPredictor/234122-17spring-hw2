@@ -28,9 +28,9 @@ int main(int argc, char **argv)
    r=visitor_quit(sys, 201, 9);
    ASSERT("1.2" , r==OK)
 
-   //int time;
-   //r=best_time_of_system_challenge(sys, "challenge_2", &time);
-   //ASSERT("1.3" , time==4)
+   int time;
+   r=best_time_of_system_challenge(sys, "challenge_2", &time);
+   ASSERT("1.3" , time==4)
 
    r=change_system_room_name(sys, "room_1", "room_111");
 
