@@ -161,8 +161,11 @@ Result visitor_quit_room(Visitor *visitor, int quit_time) {
 	if ( visitor->current_challenge == NULL ) {
 		return NOT_IN_ROOM;
 	}
-	//TODO - check if it's the best time
 	struct SChallengeActivity *challengeActivity = visitor->current_challenge;
+
+	int time = quit_time - challengeActivity->start_time;
+	set_best_time_of_challenge(challengeActivity->challenge, time);
+
 	challengeActivity->start_time = -1;
 	challengeActivity->visitor = NULL;
 	visitor->room_name = NULL;

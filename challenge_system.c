@@ -27,6 +27,7 @@ Visitor* find_visitor_by_name(char* visitor_name);
 VisitorNode* createVisitorNode(Visitor* visitor);
 Result printAllVisitor(ChallengeRoomSystem *sys);
 VisitorNode* findVisitorNodebyId(ChallengeRoomSystem *sys, int id);
+Result removeVisitorNodebyId(ChallengeRoomSystem *sys, int id);
 //int isVisitorNowInRoom(ChallengeRoomSystem *sys, int visitor_id);
 //Challenge* findChallengeInRoom(ChallengeRoomSystem *sys, char *room_name, Level level);
 
@@ -191,13 +192,34 @@ Result visitor_arrive(ChallengeRoomSystem *sys, char *room_name, char *visitor_n
 		return result;
 	}
 	sys->lastTime = start_time;
-	printAllVisitor(sys);
+	//printAllVisitor(sys);
 	return OK;
 }
 
 
 Result visitor_quit(ChallengeRoomSystem *sys, int visitor_id, int quit_time) {
-	//TODO
+	if( sys == NULL) {
+		return NULL_PARAMETER;
+	}
+	if( sys->lastTime > quit_time) {
+		return ILLEGAL_TIME;
+	}
+	VisitorNode *visitorNode = findVisitorNodebyId(sys, visitor_id);
+	if( visitorNode == NULL ) {
+		return NOT_IN_ROOM;
+	}
+	//printf("\n");
+	//printAllVisitor(sys);
+	Result result = visitor_quit_room(visitorNode->visitor, quit_time);
+	if (result != OK ) {
+		return result;
+	}
+	removeVisitorNodebyId(sys, visitor_id);
+	//printf("\n");
+	//printAllVisitor(sys);	
+	//Visitor* visitor = visitorNode->visitor;
+	//free(visitor);
+	sys->lastTime = quit_time;
 	return OK;
 }
 
@@ -336,6 +358,33 @@ VisitorNode* findVisitorNodebyId(ChallengeRoomSystem *sys, int id) {
 		}
 	}	
 	return NULL;
+}
+
+Result removeVisitorNodebyId(ChallengeRoomSystem *sys, int id) {
+	VisitorNode* pVisitor = sys->visitor_head;
+	if( pVisitor->next->visitor->visitor_id == id ) {
+		if ( pVisitor->next == NULL ) {
+			sys->visitor_head = NULL;
+			return OK;
+		} else {
+			pVisitor->next = pVisitor->next->next;
+			return OK;
+		}
+	}
+	while ( pVisitor->next->next ) {
+		pVisitor = pVisitor->next;
+		if( pVisitor->next->visitor->visitor_id == id ) {
+			if( pVisitor->next->next == NULL ) {
+				pVisitor->next = NULL;
+				return OK;
+			} else {
+				pVisitor->next = pVisitor->next->next;
+				return OK;
+			}
+			//TODO free
+		}
+	}	
+	return OK;
 }
 /*
 int isVisitorNowInRoom(ChallengeRoomSystem *sys, int visitor_id) {

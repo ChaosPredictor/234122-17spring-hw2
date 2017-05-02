@@ -170,14 +170,32 @@ int main(int argc, char **argv)
 	ASSERT("2.6h - visitor_arrive" , r==OK)
 	r=visitor_arrive(sys, "room_3", "visitor_3", 203, Easy, 6);
 	ASSERT("2.6i - visitor_arrive" , r==OK)
+	r=visitor_arrive(sys, "room_4", "visitor_4", 204, Easy, 7);
+	ASSERT("2.6i - visitor_arrive" , r==OK)
 
-	r=visitor_arrive(sys, "room_1", "visitor_11", 201, Easy, 7);
+
+	r=visitor_arrive(sys, "room_1", "visitor_11", 201, Easy, 8);
 	ASSERT("2.6j - visitor_arrive" , r==ALREADY_IN_ROOM)
 	r=visitor_arrive(sys, "room_1", "visitor_12", 202, Easy, 8);
 	ASSERT("2.6k - visitor_arrive" , r==ALREADY_IN_ROOM)
-	r=visitor_arrive(sys, "room_1", "visitor_13", 203, Easy, 9);
+	r=visitor_arrive(sys, "room_1", "visitor_13", 203, Easy, 8);
 	ASSERT("2.6l - visitor_arrive" , r==ALREADY_IN_ROOM)
 
+
+	r=visitor_quit(NULL, 202, 9);
+	ASSERT("2.61a - visitor_quit" , r==NULL_PARAMETER)
+	r=visitor_quit(sys, 201, 3);
+	ASSERT("2.61b - visitor_quit" , r==ILLEGAL_TIME)
+	r=visitor_quit(sys, 222, 9);
+	ASSERT("2.61i - visitor_quit" , r==NOT_IN_ROOM)
+	r=visitor_quit(sys, 204, 9);
+	ASSERT("2.61i - visitor_quit" , r==OK)
+	r=visitor_quit(sys, 202, 9);
+	ASSERT("2.61i - visitor_quit" , r==OK)
+	r=visitor_quit(sys, 201, 9);
+	ASSERT("2.61i - visitor_quit" , r==OK)
+	r=visitor_quit(sys, 203, 9);
+	ASSERT("2.61i - visitor_quit" , r==OK)
 
 
 	
