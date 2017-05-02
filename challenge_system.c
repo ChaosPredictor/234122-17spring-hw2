@@ -239,6 +239,12 @@ Result visitor_quit(ChallengeRoomSystem *sys, int visitor_id, int quit_time) {
 	return OK;
 }
 
+Result all_visitors_quit(ChallengeRoomSystem *sys, int quit_time) {
+
+	return OK;
+}
+
+
 Result system_room_of_visitor(ChallengeRoomSystem *sys, char *visitor_name, char **room_name) {
 	//TODO - testing
 	if (sys == NULL ) {
@@ -251,7 +257,10 @@ Result system_room_of_visitor(ChallengeRoomSystem *sys, char *visitor_name, char
 	if( visitorNode == NULL ) {
 		return NOT_IN_ROOM;
 	}
-	room_of_visitor(visitorNode->visitor, room_name);
+	Result result = room_of_visitor(visitorNode->visitor, room_name);
+	if( result != OK ) {
+		return result;
+	}
 	return OK;
 }
 
