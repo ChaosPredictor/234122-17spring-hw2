@@ -63,3 +63,11 @@ Result best_time_of_challenge(Challenge *challenge, int *time) {
 	*time = challenge->best_time;
 	return OK;
 }
+
+Result inc_num_visits(Challenge *challenge) {
+	if ( challenge == NULL) {
+		return NULL_PARAMETER;
+	}
+	challenge->num_visits += 1;
+	return OK;
+}

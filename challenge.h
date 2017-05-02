@@ -19,7 +19,7 @@ Result reset_challenge(Challenge *challenge);
 Result change_name(Challenge *challenge, char *name);
 //Done
 Result set_best_time_of_challenge(Challenge *challenge, int time);
-
+//Done
 Result best_time_of_challenge(Challenge *challenge, int *time);
 
 Result inc_num_visits(Challenge *challenge);

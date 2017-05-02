@@ -90,6 +90,16 @@ int main(int argc, char **argv)
 	ASSERT("2.00c - best_time_of_challenge" , r==OK && time == 30)
 
 
+	r = inc_num_visits(NULL);
+	ASSERT("2.00a - inc_num_visits" , r==NULL_PARAMETER)
+	ASSERT("2.00bPre - inc_num_visits" , challenge->num_visits == 0)	
+	r = inc_num_visits(challenge);
+	ASSERT("2.00b - inc_num_visits" , r==OK && challenge->num_visits == 1)
+
+
+
+
+
 	r = reset_challenge(NULL);
 	ASSERT("2.1a - reset_challenge" , r==NULL_PARAMETER)
 	r = reset_challenge(challenge);
