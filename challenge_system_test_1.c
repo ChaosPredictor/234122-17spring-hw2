@@ -163,14 +163,20 @@ int main(int argc, char **argv)
 	r=visitor_arrive(sys, "room_1", "visitor_1", 201, Medium, 5);
 	ASSERT("2.6e - visitor_arrive" , r==NO_AVAILABLE_CHALLENGES)
 	r=visitor_arrive(sys, "room_1", "visitor_1", 201, Hard, 5);
-	//printf("\n\n%u\n\n",r);
-	ASSERT("2.6x - visitor_arrive" , r==OK)
-	r=visitor_arrive(sys, "room_1", "visitor_2", 201, Easy, 6);
-	//printf("\n\n%u\n\n",r);
-	ASSERT("2.6x - visitor_arrive" , r==OK)
-	r=visitor_arrive(sys, "room_3", "visitor_3", 201, Easy, 6);
-	//printf("\n\n%u\n\n",r);
-	ASSERT("2.6x - visitor_arrive" , r==OK)
+	ASSERT("2.6f - visitor_arrive" , r==OK)
+	r=visitor_arrive(sys, "room_1", "visitor_1", 201, Hard, 4);
+	ASSERT("2.6g - visitor_arrive" , r==ILLEGAL_TIME)
+	r=visitor_arrive(sys, "room_1", "visitor_2", 202, Easy, 6);
+	ASSERT("2.6h - visitor_arrive" , r==OK)
+	r=visitor_arrive(sys, "room_3", "visitor_3", 203, Easy, 6);
+	ASSERT("2.6i - visitor_arrive" , r==OK)
+
+	r=visitor_arrive(sys, "room_1", "visitor_11", 201, Easy, 7);
+	ASSERT("2.6j - visitor_arrive" , r==ALREADY_IN_ROOM)
+	r=visitor_arrive(sys, "room_1", "visitor_12", 202, Easy, 8);
+	ASSERT("2.6k - visitor_arrive" , r==ALREADY_IN_ROOM)
+	r=visitor_arrive(sys, "room_1", "visitor_13", 203, Easy, 9);
+	ASSERT("2.6l - visitor_arrive" , r==ALREADY_IN_ROOM)
 
 
 

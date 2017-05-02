@@ -43,6 +43,7 @@ Result init_visitor(Visitor *visitor, char *name, int id) {
 		return MEMORY_PROBLEM;
 	}
 	strcpy(visitor->visitor_name, name);
+	visitor->visitor_id = id;
 
 	visitor->room_name = NULL;
 	visitor->current_challenge = NULL;
