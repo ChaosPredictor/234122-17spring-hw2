@@ -68,6 +68,14 @@ int main(int argc, char **argv)
 	ASSERT("2.00c - change_name" , r==OK && strcmp(challenge->name,"newName") == 0)
 
 
+	r = set_best_time_of_challenge(NULL, 25);
+	ASSERT("2.00a - set_best_time_of_challenge" , r==NULL_PARAMETER)
+	ASSERT("2.00bPre - set_best_time_of_challenge" , challenge->best_time == 0)
+	r = set_best_time_of_challenge(challenge, 25);
+	ASSERT("2.00b - set_best_time_of_challenge" , r==OK && challenge->best_time == 25)
+
+
+
 	r = reset_challenge(NULL);
 	ASSERT("2.1a - reset_challenge" , r==NULL_PARAMETER)
 	r = reset_challenge(challenge);

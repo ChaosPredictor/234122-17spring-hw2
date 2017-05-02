@@ -43,3 +43,11 @@ Result change_name(Challenge *challenge, char *name) {
 	return OK;
 
 }
+
+Result set_best_time_of_challenge(Challenge *challenge, int time) {
+	if ( challenge == NULL) {
+		return NULL_PARAMETER;
+	}
+	challenge->best_time = time;	
+	return OK;
+}
