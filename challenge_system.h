@@ -26,7 +26,7 @@ Result visitor_quit(ChallengeRoomSystem *sys, int visitor_id, int quit_time);
 
 Result all_visitors_quit(ChallengeRoomSystem *sys, int quit_time);
 
-
+//Done
 Result system_room_of_visitor(ChallengeRoomSystem *sys, char *visitor_name, char **room_name);
 
 //Done
@@ -38,7 +38,7 @@ Result change_system_room_name(ChallengeRoomSystem *sys, char *current_name, cha
 //Done
 Result best_time_of_system_challenge(ChallengeRoomSystem *sys, char *challenge_name, int *time);
 
-
+//Done
 Result most_popular_challenge(ChallengeRoomSystem *sys, char **challenge_name);
 
 

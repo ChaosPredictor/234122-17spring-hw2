@@ -24,8 +24,8 @@ Result challengeRoomRead(ChallengeRoom* challengeRoom, FILE* inputFile);
 Challenge* findChallengeById(ChallengeRoomSystem *sys, int id);
 Challenge* findChallengeByName(ChallengeRoomSystem *sys, char *name);
 ChallengeRoom* findRoomByName(ChallengeRoomSystem *sys, char* name);
-Visitor* find_visitor_by_name(char* visitor_name);
 VisitorNode* createVisitorNode(Visitor* visitor);
+VisitorNode* findVisitorNodebyName(ChallengeRoomSystem *sys, char *name);
 Result printAllVisitor(ChallengeRoomSystem *sys);
 VisitorNode* findVisitorNodebyId(ChallengeRoomSystem *sys, int id);
 Result removeVisitorNodebyId(ChallengeRoomSystem *sys, int id);
@@ -240,18 +240,19 @@ Result visitor_quit(ChallengeRoomSystem *sys, int visitor_id, int quit_time) {
 }
 
 Result system_room_of_visitor(ChallengeRoomSystem *sys, char *visitor_name, char **room_name) {
+	//TODO - testing
 	if (sys == NULL ) {
 		return NULL_PARAMETER;
 	}	
 	if (visitor_name == NULL || room_name == NULL) {
 		return ILLEGAL_PARAMETER;
 	}
-	Visitor* visitor = find_visitor_by_name(visitor_name);
-	if ( visitor != NULL ) {
-		return ALREADY_IN_ROOM;
+	VisitorNode* visitorNode = findVisitorNodebyName(sys, visitor_name);
+	if( visitorNode == NULL ) {
+		return NOT_IN_ROOM;
 	}
-	room_of_visitor(visitor, room_name);
-	return NOT_IN_ROOM;
+	room_of_visitor(visitorNode->visitor, room_name);
+	return OK;
 }
 
 Result change_challenge_name(ChallengeRoomSystem *sys, int challenge_id, char *new_name) {
@@ -431,12 +432,6 @@ ChallengeRoom* findRoomByName(ChallengeRoomSystem *sys, char* name) {
 }
 
 
-Visitor* find_visitor_by_name(char* visitor_name) {
-	//TODO - find visitor by name	
-	return NULL;
-}
-
-
 VisitorNode* createVisitorNode(Visitor* visitor) {
 	VisitorNode* visitorNode = malloc(sizeof(*visitorNode));
 	if ( visitorNode == NULL ) {
@@ -463,6 +458,17 @@ VisitorNode* findVisitorNodebyId(ChallengeRoomSystem *sys, int id) {
 	while ( pVisitor->next ) {
 		pVisitor = pVisitor->next;
 		if( pVisitor->visitor->visitor_id == id) {
+			return pVisitor;
+		}
+	}	
+	return NULL;
+}
+
+VisitorNode* findVisitorNodebyName(ChallengeRoomSystem *sys, char *name) {
+	VisitorNode* pVisitor = sys->visitor_head;
+	while ( pVisitor->next ) {
+		pVisitor = pVisitor->next;
+		if( strcmp(pVisitor->visitor->visitor_name, name) == 0) {
 			return pVisitor;
 		}
 	}	
