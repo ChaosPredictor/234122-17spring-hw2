@@ -9,15 +9,22 @@
 
 #define NAME_LENG 51 //Max leng 50 + 1 of end of string
 
-typedef char* Name;
+//typedef char* Name;
 
-Result nameRead(Name name, FILE* inputFile);
+typedef struct VisitorNodeStr {
+	Visitor *visitor;
+	struct VisitorNodeStr* next;
+} VisitorNode;
+
+
+Result nameRead(char* name, FILE* inputFile);
 Result numberRead(int* number, FILE* inputFile);
 Result challengeRead(Challenge* challenge, FILE* inputFile);
 Result challengeRoomRead(ChallengeRoom* challengeRoom, FILE* inputFile);
 Challenge* findChallengeById(ChallengeRoomSystem *sys, int id);
 ChallengeRoom* findRoomByName(ChallengeRoomSystem *sys, char* name);
 Visitor* find_visitor_by_name(char* visitor_name);
+VisitorNode* createVisitorNode(Visitor* visitor);
 //int isVisitorNowInRoom(ChallengeRoomSystem *sys, int visitor_id);
 //Challenge* findChallengeInRoom(ChallengeRoomSystem *sys, char *room_name, Level level);
 
@@ -116,11 +123,17 @@ Result create_system(char *init_file, ChallengeRoomSystem **sys) {
 		} 
 	}
 	
-	(*sys)->lastTime = 0;	
-	(*sys)->visitor_head = NULL;
+	(*sys)->lastTime = 0;
+	(*sys)->visitor_head = malloc(sizeof(VisitorNode*));	
+	//(*sys)->visitor_head.next = NULL;
 	return OK;
 }
 
+
+Result destroy_system(ChallengeRoomSystem *sys, int destroy_time, char **most_popular_challenge, char **challenge_best_time) {
+	//TODO
+	return OK;
+}
 
 
 Result visitor_arrive(ChallengeRoomSystem *sys, char *room_name, char *visitor_name, int visitor_id, Level level, int start_time) {
@@ -152,11 +165,24 @@ Result visitor_arrive(ChallengeRoomSystem *sys, char *room_name, char *visitor_n
 		free(visitor);
 		return result;
 	}
+	VisitorNode* visitorNode = createVisitorNode(visitor);
+	if(visitorNode == NULL ) {
+		free(visitor);
+		return MEMORY_PROBLEM;
+	}
+	VisitorNode* pVisitor = sys->visitor_head;
+	printf("\n\ninit list\n\n");
+	while ( pVisitor->next ) {
+		printf("while run\n");
+		pVisitor = pVisitor->next;
+	}
+	pVisitor->next = visitorNode;
 	result = visitor_enter_room(room, visitor, level, start_time);
 	if (result != OK ) {
 		free(visitor);		
 		return result;
 	}
+	
 	//TODO add visitor to linked list or maybe not
 	return OK;
 }
@@ -266,6 +292,16 @@ Visitor* find_visitor_by_name(char* visitor_name) {
 	return NULL;
 }
 
+
+VisitorNode* createVisitorNode(Visitor* visitor) {
+	VisitorNode* visitorNode = malloc(sizeof(*visitorNode));
+	if ( visitorNode == NULL ) {
+		return NULL;
+	}
+	visitorNode->visitor = visitor;
+	visitorNode->next = NULL;
+	return visitorNode;
+}
 
 /*
 int isVisitorNowInRoom(ChallengeRoomSystem *sys, int visitor_id) {

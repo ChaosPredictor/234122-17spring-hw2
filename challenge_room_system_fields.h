@@ -5,4 +5,4 @@ int numberOfChallenges;
 ChallengeRoom* challengeRooms;
 int numberOfChallengeRooms;
 int lastTime;
-Visitor* visitor_head;
+struct VisitorNodeStr* visitor_head;

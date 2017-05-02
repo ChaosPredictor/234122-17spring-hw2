@@ -165,6 +165,14 @@ int main(int argc, char **argv)
 	r=visitor_arrive(sys, "room_1", "visitor_1", 201, Hard, 5);
 	//printf("\n\n%u\n\n",r);
 	ASSERT("2.6x - visitor_arrive" , r==OK)
+	r=visitor_arrive(sys, "room_1", "visitor_2", 201, Easy, 6);
+	//printf("\n\n%u\n\n",r);
+	ASSERT("2.6x - visitor_arrive" , r==OK)
+	r=visitor_arrive(sys, "room_3", "visitor_3", 201, Easy, 6);
+	//printf("\n\n%u\n\n",r);
+	ASSERT("2.6x - visitor_arrive" , r==OK)
+
+
 
 	
 	r=init_visitor(NULL, "name", 3);

@@ -23,6 +23,7 @@ Result set_best_time_of_challenge(Challenge *challenge, int time);
 Result best_time_of_challenge(Challenge *challenge, int *time);
 //Done
 Result inc_num_visits(Challenge *challenge);
+//Done
 //TODO - change function name
 Result num_visits_function(Challenge *challenge, int *visits);
 
