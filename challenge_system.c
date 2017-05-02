@@ -254,6 +254,23 @@ Result system_room_of_visitor(ChallengeRoomSystem *sys, char *visitor_name, char
 	return NOT_IN_ROOM;
 }
 
+Result change_challenge_name(ChallengeRoomSystem *sys, int challenge_id, char *new_name) {
+	//TODO testing
+	if( sys == NULL || new_name == NULL ) {
+		return NULL_PARAMETER;
+	}
+	Challenge *challenge = findChallengeById(sys, challenge_id);
+	if ( challenge == NULL ) {
+		return ILLEGAL_PARAMETER;
+	}
+	challenge->name = realloc(challenge->name, sizeof(char) * (strlen(new_name) + 1));
+	if ( challenge->name == NULL) {
+		return MEMORY_PROBLEM;
+	} 
+	strcpy(challenge->name, new_name);
+	return OK;
+}
+
 Result change_system_room_name(ChallengeRoomSystem *sys, char *current_name,  char *new_name) {
 	//TODO testing
 	if( sys == NULL || current_name == NULL || new_name == NULL ) {
@@ -272,6 +289,7 @@ Result change_system_room_name(ChallengeRoomSystem *sys, char *current_name,  ch
 }
 
 Result best_time_of_system_challenge(ChallengeRoomSystem *sys, char *challenge_name, int *time) {
+	//TODO testing	
 	if( sys == NULL || challenge_name == NULL || time == NULL ) {
 		return NULL_PARAMETER;
 	}

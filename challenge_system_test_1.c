@@ -46,11 +46,11 @@ int main(int argc, char **argv)
    r=visitor_arrive(sys, "room_111", "visitor_4", 204, Easy, 16);
    ASSERT("1.7" , r==NO_AVAILABLE_CHALLENGES)
 
-   //r=change_challenge_name(sys, 11, "challenge_1111");
+   r=change_challenge_name(sys, 11, "challenge_1111");
 
-   //r=best_time_of_system_challenge(sys, "challenge_1111", &time);
+   r=best_time_of_system_challenge(sys, "challenge_1111", &time);
 
-   //ASSERT("1.8" , time==0)
+   ASSERT("1.8" , time==0)
 
    //char *namep=NULL;
    //r=most_popular_challenge(sys, &namep);
