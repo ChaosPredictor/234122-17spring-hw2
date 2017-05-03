@@ -120,6 +120,19 @@ Result num_of_free_places_for_level(ChallengeRoom *room, Level level, int *place
 	return OK;
 }
 
+Result change_room_name(ChallengeRoom *room, char *new_name) {
+	//TODO testing
+	if ( room == NULL || new_name == NULL ) {
+		return NULL_PARAMETER;
+	}
+	room->name = realloc(room->name, sizeof(char) * (strlen(new_name) + 1));
+	if ( room->name == NULL) {
+		return MEMORY_PROBLEM;
+	} 
+	strcpy(room->name, new_name);
+	return OK;
+}
+
 Result room_of_visitor(Visitor *visitor, char **room_name) {
 	if ( visitor == NULL || room_name == NULL )	{
 		return NULL_PARAMETER;

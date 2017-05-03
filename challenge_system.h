@@ -23,7 +23,7 @@ Result visitor_arrive(ChallengeRoomSystem *sys, char *room_name, char *visitor_n
 //Done
 Result visitor_quit(ChallengeRoomSystem *sys, int visitor_id, int quit_time);
 
-
+//Done
 Result all_visitors_quit(ChallengeRoomSystem *sys, int quit_time);
 
 //Done

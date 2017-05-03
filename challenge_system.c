@@ -315,12 +315,7 @@ Result change_system_room_name(ChallengeRoomSystem *sys, char *current_name,  ch
 	if ( room == NULL ) {
 		return ILLEGAL_PARAMETER;
 	}
-	room->name = realloc(room->name, sizeof(char) * (strlen(new_name) + 1));
-	if ( room->name == NULL) {
-		return MEMORY_PROBLEM;
-	} 
-	strcpy(room->name, new_name);
-	return OK;
+	return change_room_name(room, new_name);
 }
 
 Result best_time_of_system_challenge(ChallengeRoomSystem *sys, char *challenge_name, int *time) {

@@ -74,14 +74,14 @@ int main(int argc, char **argv)
    r=best_time_of_system_challenge(sys, "challenge_4", &time);
    ASSERT("1.13" , time==2)
 
-   //char *most_popular_challenge=NULL, *challenge_best_time=NULL;
-   //r=destroy_system(sys, 18, &most_popular_challenge, &challenge_best_time);
-   //ASSERT("1.14" , most_popular_challenge!=NULL && strcmp(most_popular_challenge, "challenge_1111")==0)
-   //ASSERT("1.15" , challenge_best_time!=NULL && strcmp(challenge_best_time, "challenge_4")==0)
+   char *most_popular_challenge=NULL, *challenge_best_time=NULL;
+   r=destroy_system(sys, 18, &most_popular_challenge, &challenge_best_time);
+   ASSERT("1.14" , most_popular_challenge!=NULL && strcmp(most_popular_challenge, "challenge_1111")==0)
+   ASSERT("1.15" , challenge_best_time!=NULL && strcmp(challenge_best_time, "challenge_4")==0)
 
-   //free(most_popular_challenge);
+   free(most_popular_challenge);
 
-   //free(challenge_best_time);
+   free(challenge_best_time);
 
    return 0;
 }
